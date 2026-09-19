@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { supabase } from "../../../lib/supabase";
+import { getSupabase } from "../../../lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 export default async function Skill({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
