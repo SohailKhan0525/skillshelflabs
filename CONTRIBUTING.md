@@ -1,28 +1,55 @@
 # Contributing to SkillShelf
 
-Thanks for helping improve SkillShelf.
+Thanks for contributing to SkillShelf.
 
-## What belongs here
+## Principles
 
-Contributions should improve discovery, clarity, accessibility, design, developer experience, or the quality of published skills.
+SkillShelf is a real community catalog. Contributions should improve product quality without manufacturing catalog data.
 
-## Before opening a pull request
+Please:
 
-1. Read the README and GUIDE.
-2. Keep changes focused.
+- keep user-facing content truthful and verifiable;
+- do not add fake skills, fake demos, fake testimonials, fake metrics, or placeholder creator identities;
+- keep AI-tool associations explicit;
+- preserve creator attribution and source links;
+- never commit secrets.
+
+## Development
+
+1. Read `README.md` and `GUIDE.md`.
+2. Install dependencies with `npm install`.
 3. Run `npm run build`.
-4. Check the relevant routes locally.
-5. Never commit secrets, API keys, Supabase service-role keys, private data, or generated credentials.
-6. If you add a skill, confirm you created it or have permission to publish it.
+4. Test the routes affected by your change.
+5. Check responsive navigation and links.
+6. For database changes, update the Supabase schema/migration documentation and verify RLS.
 
-## Adding a skill
+## Adding a real skill
 
-A skill page should explain its name, creator, AI tool, category, purpose, audience, usage, source, demo/example, and limitations.
+Only add a skill when you created it or have permission from its creator.
+
+A published record should have:
+
+- name and description;
+- actual AI-tool association;
+- category;
+- creator and organization;
+- source URL;
+- creator-provided demo URL when available;
+- real usage instructions.
+
+Do not copy a skill onto multiple AI-tool pages unless the database explicitly records those associations.
 
 ## Pull requests
 
-Use a clear title and describe what changed, why it changed, and how it was tested. Small, reviewable pull requests are preferred.
+Explain:
 
-## Security issues
+- what changed;
+- why it changed;
+- how it was tested;
+- any database or security implications.
 
-Do not disclose sensitive vulnerabilities in a public issue. Follow SECURITY.md.
+Keep pull requests focused and reviewable.
+
+## Security
+
+For sensitive vulnerabilities, follow [SECURITY.md](SECURITY.md) rather than publishing credentials or exploit details in a public issue.
