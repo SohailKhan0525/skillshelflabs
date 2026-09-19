@@ -10,7 +10,9 @@ create table if not exists public.profiles (
   avatar_url text,
   bio text,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  creator_name text,
+  organization_name text
 );
 
 create table if not exists public.skills (
@@ -20,7 +22,7 @@ create table if not exists public.skills (
   description text not null,
   category text not null,
   ai_tool text not null,
-  creator_id uuid not null references public.profiles(id) on delete restrict,
+  creator_id uuid references public.profiles(id) on delete restrict,
   source_url text,
   demo_url text,
   instructions text,
