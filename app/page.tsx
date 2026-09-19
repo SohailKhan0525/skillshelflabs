@@ -1,48 +1,11 @@
 import Link from "next/link";
-
-const platforms = [
-  { slug: "claude", name: "Claude" },
-  { slug: "codex", name: "Codex" },
-  { slug: "gemini", name: "Gemini" },
-  { slug: "cursor", name: "Cursor" },
-];
-
-const skills = [
-  {
-    platform: "Claude",
-    title: "Frontend UI & UX Wizard",
-    slug: "frontend-ui-ux-wizard",
-    description: "A guided skill for turning a rough website idea into a clear visual direction, responsive UI, and implementation-ready frontend decisions.",
-    tag: "Website design",
-  },
-];
-
-export default function Home() {
-  return <main>
-    <nav className="nav"><Link href="/" className="brand">SKILLSHELF</Link><div className="nav-links"><Link href="/skills">Skills</Link><Link href="/ai">AI tools</Link><Link href="/submit">Publish a skill</Link></div></nav>
-
-    <section className="hero shell">
-      <p className="eyebrow">THE HOME FOR AI WEBSITE SKILLS</p>
-      <h1>Find skills that help you <span>build better websites.</span></h1>
-      <p className="hero-copy">A community library for AI skills that help with website design and development. Every skill gets a clear page explaining what it does, who it is for, how to use it, and where to get it.</p>
-      <div className="actions"><Link href="/skills" className="button">Explore website skills ↗</Link><Link href="/submit" className="text-link">Publish yours</Link></div>
-    </section>
-
-    <section className="platforms shell">
-      <div className="section-head"><p className="eyebrow">BROWSE BY AI TOOL</p><h2>Find website skills for the AI tool you already use.</h2></div>
-      <div className="platform-grid">{platforms.map(p=><Link href={"/ai/"+p.slug} className="platform" key={p.slug}><span>AI TOOL</span><strong>{p.name}</strong><em>Explore website skills →</em></Link>)}</div>
-    </section>
-
-    <section className="featured shell">
-      <div className="section-head"><p className="eyebrow">YOUR LIBRARY</p><h2>Start with a skill that has context.</h2></div>
-      <div className="skill-grid">{skills.map(s=><Link href={"/skills/"+s.slug} className="skill" key={s.slug}><span className="tag">{s.tag}</span><small>{s.platform}</small><h3>{s.title}</h3><p>{s.description}</p><b>Understand this skill ↗</b></Link>)}</div>
-    </section>
-
-    <section className="creator shell">
-      <div><p className="eyebrow">FOR CREATORS</p><h2>Made a website skill?<br/><span>Give it a home.</span></h2></div>
-      <div><p>Publish the skill's purpose, instructions, examples, source, AI tool, and creator information so a new user or vibe coder can understand it before trying it.</p><Link href="/submit" className="button">Publish a website skill ↗</Link></div>
-    </section>
-
-    <footer className="footer shell"><span>SKILLSHELF</span><span>Discover · Understand · Build</span></footer>
-  </main>;
-}
+const platforms=[["chatgpt","ChatGPT"],["claude","Claude"],["codex","Codex"],["gemini","Gemini"],["cursor","Cursor"]];
+const skills=[{platform:"ChatGPT",title:"Frontend UI & UX Wizard",slug:"frontend-ui-ux-wizard",description:"A guided skill for turning a rough website idea into a clear visual direction, responsive UI, and implementation-ready frontend decisions.",tag:"Website design"}];
+export default function Home(){return <main>
+<nav className="nav"><Link href="/" className="brand">SKILLSHELF</Link><div className="nav-links"><Link href="/skills">Skills</Link><Link href="/ai">AI tools</Link><Link href="/submit">Publish a skill</Link></div></nav>
+<section className="hero shell"><p className="eyebrow">THE HOME FOR AI WEBSITE SKILLS</p><h1>Find skills that help you <span>build better websites.</span></h1><p className="hero-copy">A community library for AI skills that help with website design and development. Every skill gets a clear page explaining what it does, who it is for, how to use it, and where to get it.</p><div className="actions"><Link href="/skills" className="button">Explore website skills ↗</Link><Link href="/submit" className="text-link">Publish yours</Link></div></section>
+<section className="platforms shell"><div className="section-head"><p className="eyebrow">BROWSE BY AI TOOL</p><h2>Find website skills for the AI tool you already use.</h2></div><div className="platform-grid">{platforms.map(p=><Link href={"/ai/"+p[0]} className="platform" key={p[0]}><span>AI TOOL</span><strong>{p[1]}</strong><em>Explore website skills →</em></Link>)}</div></section>
+<section className="featured shell"><div className="section-head"><p className="eyebrow">YOUR LIBRARY</p><h2>Start with a skill that has context.</h2></div><div className="skill-grid">{skills.map(s=><Link href={"/skills/"+s.slug} className="skill" key={s.slug}><span className="tag">{s.tag}</span><small>{s.platform}</small><h3>{s.title}</h3><p>{s.description}</p><b>Understand this skill ↗</b></Link>)}</div></section>
+<section className="creator shell"><div><p className="eyebrow">FOR CREATORS</p><h2>Made a website skill?<br/><span>Give it a home.</span></h2></div><div><p>Publish the skill's purpose, instructions, examples, source, AI tool, and creator information so a new user or vibe coder can understand it before trying it.</p><Link href="/submit" className="button">Publish a website skill ↗</Link></div></section>
+<footer className="footer shell"><span>SKILLSHELF</span><span>Discover · Understand · Build</span></footer>
+</main>}
