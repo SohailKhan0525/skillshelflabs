@@ -11,6 +11,8 @@ function isHttpUrl(value: string) { try { const u = new URL(value); return u.pro
 
 export default function SubmitForm() {
   const [name, setName] = useState("");
+  const [creatorEmail, setCreatorEmail] = useState("");
+  const [loadingCreator, setLoadingCreator] = useState(true);
   const [organization, setOrganization] = useState("");
   const [skillName, setSkillName] = useState("");
   const [description, setDescription] = useState("");
@@ -26,9 +28,41 @@ export default function SubmitForm() {
   const router = useRouter();
 
   useEffect(() => {
-    getSupabaseBrowser().auth.getUser().then(({ data, error }) => {
-      if (error || !data.user?.email_confirmed_at) router.replace("/submit");
-    });
+    let active = true;
+    async function loadCreator() {
+      const supabase = getSupabaseBrowser();
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user?.email_confirmed_at) {
+        router.replace("/submit");
+        return;
+      }
+
+      const user = data.user;
+      const metadataName = typeof user.user_metadata?.display_name === "string" ? user.user_metadata.display_name.trim() : "";
+      let displayName = metadataName;
+
+      if (!displayName) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("display_name")
+          .eq("id", user.id)
+          .maybeSingle();
+        displayName = profile?.display_name?.trim() ?? "";
+      }
+
+      if (!displayName) {
+        displayName = user.email?.split("@")[0] ?? "Creator";
+      }
+
+      if (active) {
+        setName(displayName);
+        setCreatorEmail(user.email ?? "");
+        setLoadingCreator(false);
+      }
+    }
+
+    loadCreator();
+    return () => { active = false; };
   }, [router]);
 
   async function submitSkill(e: FormEvent) {
@@ -91,7 +125,9 @@ export default function SubmitForm() {
 
   return (
     <form className="publish-form" onSubmit={submitSkill}>
-      <label>Creator name<input required value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" /></label>
+      <label>Creator name<input required value={name} readOnly disabled autoComplete="name" aria-describedby="creator-identity-note" /></label>
+      <p id="creator-identity-note" className="form-note">This name comes from your verified creator account and cannot be changed from a skill submission.</p>
+      {creatorEmail && <p className="form-note">Verified email: {creatorEmail}</p>}
       <label>Organization (optional)<input value={organization} onChange={(e) => setOrganization(e.target.value)} /></label>
       <hr />
       <label>Skill name<input required value={skillName} onChange={(e) => setSkillName(e.target.value)} /></label>
@@ -107,7 +143,7 @@ export default function SubmitForm() {
         <p className="form-note">Before submitting, test the demo on phone, tablet, and desktop. Do not publish secrets or private credentials.</p>
       </div>
       {message && <p className="form-message" role="status" aria-live="polite">{message}</p>}
-      <button className="button" disabled={busy}>{busy ? "Submitting…" : "Submit for review"}</button>
+      <button className="button" disabled={busy || loadingCreator || !name}>{busy ? "Submitting…" : loadingCreator ? "Loading creator…" : "Submit for review"}</button>
     </form>
   );
 }
