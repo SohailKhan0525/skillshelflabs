@@ -1,24 +1,21 @@
 # Security Policy
 
-## Reporting a vulnerability
+## Reporting
 
-Do not publish secrets, credentials, exploit details, or other sensitive information in a public GitHub issue.
+Do not publish credentials, tokens, private user data, or sensitive exploit details in a public issue.
 
-Use GitHub's private vulnerability reporting/security advisory flow for this repository when available. If unavailable, contact the repository owner privately through GitHub before public disclosure.
+Use GitHub's private vulnerability reporting/security advisory flow when available. Otherwise contact the repository owner privately through GitHub.
 
-## What to include
+## Production security rules
 
-- Short description
-- Affected route, component, or dependency
-- Reproduction steps or minimal proof of concept
-- Potential impact
-- Suggested mitigation, if known
-
-## Security principles
-
-- Never commit API keys, Supabase service-role keys, access tokens, or passwords.
+- Never commit Supabase service-role keys.
 - Keep privileged database operations server-side.
-- Treat submitted skill content as untrusted input.
-- Validate and sanitize user-controlled content before rendering.
-- Use Supabase Row Level Security for user-owned data when the database is enabled.
-- Keep dependencies updated and review security advisories.
+- Use the publishable Supabase key only where appropriate.
+- Keep Row Level Security enabled.
+- Treat creator-submitted content and URLs as untrusted input.
+- Validate URLs and user-controlled content before adding new write flows.
+- Review dependency and framework security updates.
+
+## Report details
+
+Include the affected route/component, reproduction steps, impact, and suggested mitigation when safe to share.
