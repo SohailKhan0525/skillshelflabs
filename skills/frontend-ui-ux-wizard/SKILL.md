@@ -1,48 +1,24 @@
-# Frontend UI & UX Wizard
+---
+name: frontend-ui-ux-wizard
+description: Designs and builds real, production websites with a non-templated visual identity, deliberate design tokens and fonts, responsive implementation, accessibility, real product screenshots when applicable, build verification, GitHub, and deployment. Use for website and frontend UI work. Websites only.
+---
 
-**Author:** Sohail Khan  
-**Platform:** ChatGPT  
-**Category:** Website design
+# Frontend UI/UX Wizard
 
-## Purpose
+Design and build a real website end-to-end — not a mockup and not a template with the logo swapped — then prove it works.
 
-Turn a rough website idea into a clear visual direction, responsive interface, and implementation-ready frontend decisions.
+## Attribution
 
-## Workflow
+Original skill source: Qofeno.
+SkillShelf listing and demo: Sohail Khan / SkillShelf.
 
-1. Frame the intent — identify audience, primary action, content priorities, constraints, and desired mood.
-2. Shape the system — define typography, color, spacing, hierarchy, surfaces, components, interaction patterns, and responsive behavior as one visual language.
-3. Build the proof — turn the direction into concrete screens/components with realistic content and clear interaction states.
-4. Review the result — check hierarchy, responsiveness, accessibility, consistency, and whether the interface still serves the original goal.
+Upstream source:
+https://github.com/Qofeno/skills/blob/main/skills%2Ffrontend-ui-ux-wizard%2FSKILL.md
 
-## What to provide
+The SkillShelf catalog does not present the upstream skill as an original SkillShelf creation.
 
-- Website/product idea
-- Audience
-- Primary action or business goal
-- Brand or visual references
-- Preferred colors or colors to avoid
-- Technical constraints or preferred stack
-- Existing screenshots, copy, or assets
+## Canonical source
 
-If some inputs are missing, make reasonable assumptions and state them before implementation.
+The complete workflow — including real inputs, complete website scope, design tokens, deliberate fonts, real product screenshots, responsive implementation, accessibility, SEO, cross-device testing, build verification, GitHub, and deployment — is maintained by Qofeno at the upstream source above.
 
-## Expected output
-
-As appropriate:
-
-- Page/section structure
-- Visual direction and design-token approach
-- Typography and color decisions
-- Responsive behavior
-- Component and interaction rules
-- Production-minded frontend implementation guidance
-- Explanation of major design decisions
-
-## Quality bar
-
-Avoid generic template output. Prioritize hierarchy, clarity, consistency, responsive behavior, accessibility, and a coherent visual system.
-
-## Ownership
-
-This skill is authored and maintained by **Sohail Khan** for SkillShelf. Do not present it as a third-party skill or remove its attribution without permission.
+Use the upstream SKILL.md as the authoritative complete instructions.
