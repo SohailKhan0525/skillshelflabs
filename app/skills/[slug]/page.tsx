@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Skill({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { data: s } = await supabase
+  const { data: s } = await getSupabase()
     .from("skills")
     .select("slug,name,description,category,ai_tool,creator_name,organization_name,source_url,demo_url,instructions")
     .eq("slug", slug)
