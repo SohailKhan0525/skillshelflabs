@@ -32,7 +32,7 @@ export default function SubmitForm() {
     async function loadCreator() {
       const supabase = getSupabaseBrowser();
       const { data, error } = await supabase.auth.getUser();
-      if (error || !data.user?.email_confirmed_at) {
+      if (error || !data.user) {
         router.replace("/submit");
         return;
       }
@@ -85,7 +85,7 @@ export default function SubmitForm() {
     try {
       const supabase = getSupabaseBrowser();
       const { data: { user }, error: userError } = await supabase.auth.getUser();
-      if (userError || !user?.email_confirmed_at) {
+      if (userError || !user) {
         router.replace("/submit");
         return;
       }
@@ -126,8 +126,8 @@ export default function SubmitForm() {
   return (
     <form className="publish-form" onSubmit={submitSkill}>
       <label>Creator name<input required value={name} readOnly disabled autoComplete="name" aria-describedby="creator-identity-note" /></label>
-      <p id="creator-identity-note" className="form-note">This name comes from your verified creator account and cannot be changed from a skill submission.</p>
-      {creatorEmail && <p className="form-note">Verified email: {creatorEmail}</p>}
+      <p id="creator-identity-note" className="form-note">This name comes from your creator account and cannot be changed from a skill submission.</p>
+      {creatorEmail && <p className="form-note">Creator email: {creatorEmail}</p>}
       <label>Organization (optional)<input value={organization} onChange={(e) => setOrganization(e.target.value)} /></label>
       <hr />
       <label>Skill name<input required value={skillName} onChange={(e) => setSkillName(e.target.value)} /></label>
