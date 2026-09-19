@@ -11,9 +11,9 @@ export default function SkillSubmission() {
     <main>
       <SiteNav />
       <section className="page-head shell">
-        <p className="eyebrow">CREATOR AREA · VERIFIED</p>
+        <p className="eyebrow">CREATOR AREA</p>
         <h1>Submit your skill.</h1>
-        <p>Your creator account is verified. Add the real source, matching demo, instructions, and review attestations below.</p>
+        <p>Your creator account is ready. Add the real source, matching demo, instructions, and review attestations below.</p>
       </section>
       <section className="shell form-card">
         <h2>Skill submission</h2>
