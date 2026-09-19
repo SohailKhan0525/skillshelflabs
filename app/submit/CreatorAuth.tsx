@@ -6,7 +6,6 @@ import { getSupabaseBrowser } from "../../lib/supabase-browser";
 
 export default function CreatorAuth() {
   const router = useRouter();
-  const supabase = getSupabaseBrowser();
   const [mode, setMode] = useState<"signup" | "signin">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +16,7 @@ export default function CreatorAuth() {
 
   useEffect(() => {
     let active = true;
+    const supabase = getSupabaseBrowser();
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (active && session?.user?.email_confirmed_at) router.replace("/submit/skill");
     });
@@ -25,6 +25,7 @@ export default function CreatorAuth() {
 
   async function resend() {
     if (!verificationEmail) return;
+    const supabase = getSupabaseBrowser();
     setBusy(true);
     try {
       const { error } = await supabase.auth.resend({
@@ -52,6 +53,7 @@ export default function CreatorAuth() {
 
     setBusy(true);
     try {
+      const supabase = getSupabaseBrowser();
       if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
