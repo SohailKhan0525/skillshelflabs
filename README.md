@@ -6,7 +6,7 @@ The goal is simple: make AI skills understandable before someone installs or use
 
 ## Current featured skill
 
-**Frontend UI & UX Wizard** — created by **Sohail Khan**.
+**Frontend UI & UX Wizard** — original source by **Qofeno**; SkillShelf catalog/demo by **Sohail Khan**.
 
 - AI tool: ChatGPT
 - Category: Website design
@@ -45,6 +45,10 @@ npm run dev
 - [Security](SECURITY.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 
-## Ownership
+## Ownership and attribution
 
-SkillShelf and the current featured skill are authored/maintained by **Sohail Khan**. Third-party skills should only be published with appropriate permission and attribution.
+**SkillShelf** and its catalog/demo experience are maintained by **Sohail Khan**.
+
+The featured Frontend UI & UX Wizard is sourced from **Qofeno**. SkillShelf links to the upstream source and does not claim authorship of that skill.
+
+Third-party skills should only be published with appropriate permission and attribution.
