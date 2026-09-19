@@ -1,20 +1,50 @@
-# Design skills lab
+# SkillShelf
 
-A four page landing page study. Each skill gets its own route and implementation.
+SkillShelf is a community discovery platform for AI skills that help people build websites.
 
-## Current routes
+The goal is simple: make AI skills understandable before someone installs or uses them. Each skill can have a dedicated page with its purpose, creator, AI tool, source, instructions, examples, and demo.
 
-- `/` — skill overview
-- `/skill-1/` — Redesign existing projects
+## Current featured skill
+
+**Frontend UI & UX Wizard** — created by **Sohail Khan**.
+
+- AI tool: ChatGPT
+- Category: Website design
+- Source: `skills/frontend-ui-ux-wizard/SKILL.md`
+- Demo: `/skills/frontend-ui-ux-wizard/demo`
+
+## Product routes
+
+- `/` — discovery home
+- `/skills` — all website skills
+- `/skills/[slug]` — dedicated skill pages
+- `/skills/[slug]/demo` — live demos
+- `/ai` — browse by AI tool
+- `/ai/[slug]` — tool-specific discovery
+- `/submit` — creator publishing flow
 
 ## Stack
 
-Vanilla HTML, CSS, and JavaScript. No framework migration or build step.
+- Next.js
+- React
+- TypeScript
+- Vercel
+- Supabase — production data layer to be connected
 
-## Skill 01
+## Local development
 
-Implemented from the supplied **Redesign Existing Projects** skill. The implementation follows its audit priorities and Design Values, including Geist/Manrope/Poppins fallbacks, approved dark surfaces, flat backgrounds, asymmetry, accessible states, IntersectionObserver reveals, and the prescribed motion curve.
+```bash
+npm install
+npm run dev
+```
 
-## Next
+## Documentation
 
-Add Skill 02 and Skill 03, then wire the final four page experience for Vercel.
+- [Creator Guide](GUIDE.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security](SECURITY.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## Ownership
+
+SkillShelf and the current featured skill are authored/maintained by **Sohail Khan**. Third-party skills should only be published with appropriate permission and attribution.
