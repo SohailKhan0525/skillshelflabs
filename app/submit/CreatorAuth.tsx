@@ -2,7 +2,10 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { getSupabaseBrowser } from "../../lib/supabase-browser";
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export default function CreatorAuth() {
   const router = useRouter();
@@ -10,37 +13,27 @@ export default function CreatorAuth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
-  const [verificationEmail, setVerificationEmail] = useState("");
 
   useEffect(() => {
     let active = true;
     const supabase = getSupabaseBrowser();
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (active && session?.user?.email_confirmed_at) router.replace("/submit/skill");
-    });
-    return () => { active = false; };
-  }, [router, supabase]);
 
-  async function resend() {
-    if (!verificationEmail) return;
-    const supabase = getSupabaseBrowser();
-    setBusy(true);
-    try {
-      const { error } = await supabase.auth.resend({
-        type: "signup",
-        email: verificationEmail,
-        options: { emailRedirectTo: `${window.location.origin}/submit/skill` },
-      });
-      if (error) throw error;
-      setMessage("Verification email sent again. Check your inbox and spam folder.");
-    } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Could not resend the verification email.");
-    } finally {
-      setBusy(false);
-    }
-  }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (active && session) router.replace("/submit/skill");
+    });
+
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (active && session) router.replace("/submit/skill");
+    });
+
+    return () => {
+      active = false;
+      data.subscription.unsubscribe();
+    };
+  }, [router]);
 
   async function authenticate(e: FormEvent) {
     e.preventDefault();
@@ -51,24 +44,30 @@ export default function CreatorAuth() {
       return;
     }
 
+    if (turnstileSiteKey && !captchaToken) {
+      setMessage("Please complete the security check.");
+      return;
+    }
+
     setBusy(true);
     try {
       const supabase = getSupabaseBrowser();
+
       if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
           options: {
             data: { display_name: name.trim() },
-            emailRedirectTo: `${window.location.origin}/submit/skill`,
+            captchaToken: captchaToken || undefined,
           },
         });
+
         if (error) throw error;
 
         if (!data.session) {
-          setVerificationEmail(email.trim());
           setMode("signin");
-          setMessage("Account created. Check your email and click the verification link. After verification, return here and sign in.");
+          setMessage("Account created. Sign in to continue.");
           return;
         }
 
@@ -77,28 +76,17 @@ export default function CreatorAuth() {
         const { data, error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
           password,
+          options: { captchaToken: captchaToken || undefined },
         });
 
-        if (error) {
-          if (/email not confirmed/i.test(error.message)) {
-            setVerificationEmail(email.trim());
-            setMessage("Your email is not verified yet. Verify it or resend the verification email below.");
-            return;
-          }
-          throw error;
-        }
-
-        if (!data.session?.user?.email_confirmed_at) {
-          await supabase.auth.signOut();
-          setVerificationEmail(email.trim());
-          setMessage("Please verify your email before continuing.");
-          return;
-        }
+        if (error) throw error;
+        if (!data.session) throw new Error("Sign-in did not create a session.");
 
         router.replace("/submit/skill");
       }
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Authentication failed. Please try again.");
+      setCaptchaToken("");
     } finally {
       setBusy(false);
     }
@@ -107,8 +95,8 @@ export default function CreatorAuth() {
   return (
     <div>
       <div className="auth-toggle">
-        <button type="button" className={mode === "signup" ? "active" : ""} onClick={() => setMode("signup")}>Create creator account</button>
-        <button type="button" className={mode === "signin" ? "active" : ""} onClick={() => setMode("signin")}>Sign in</button>
+        <button type="button" className={mode === "signup" ? "active" : ""} onClick={() => { setMode("signup"); setMessage(""); setCaptchaToken(""); }}>Create creator account</button>
+        <button type="button" className={mode === "signin" ? "active" : ""} onClick={() => { setMode("signin"); setMessage(""); setCaptchaToken(""); }}>Sign in</button>
       </div>
 
       <form className="publish-form" onSubmit={authenticate}>
@@ -118,11 +106,17 @@ export default function CreatorAuth() {
         <label>Email<input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" /></label>
         <label>Password<input required minLength={mode === "signup" ? 12 : 8} type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete={mode === "signup" ? "new-password" : "current-password"} /></label>
 
-        {verificationEmail && (
-          <div className="verification-panel">
-            <strong>Email verification required</strong>
-            <p>We sent a confirmation link to <strong>{verificationEmail}</strong>. Confirm it before signing in.</p>
-            <button type="button" className="button secondary" onClick={resend} disabled={busy}>{busy ? "Sending…" : "Resend verification email"}</button>
+        {turnstileSiteKey && (
+          <div className="captcha-panel">
+            <Turnstile
+              siteKey={turnstileSiteKey}
+              onSuccess={(token) => setCaptchaToken(token)}
+              onExpire={() => setCaptchaToken("")}
+              onError={() => {
+                setCaptchaToken("");
+                setMessage("Security check failed. Please try again.");
+              }}
+            />
           </div>
         )}
 
