@@ -59,13 +59,13 @@ export default function SubmitForm() {
         slug:slugify(skillName)+"-"+Math.random().toString(36).slice(2,7),
         name:skillName,description,category,ai_tool:aiTool,creator_id:creatorId,
         creator_name:name,organization_name:organization||null,source_url:source,demo_url:demo,
-        instructions,status:"published"
+        instructions,status:"pending_review"
       });
       if(error) throw error;
-      setMessage("Published. Your skill is now live in the SkillShelf catalog.");
+      setMessage("Submitted for review. Your skill will stay hidden until a SkillShelf reviewer checks the source, demo, AI-tool match, originality, and responsive behavior. Review can take up to 24 hours.");
       setSkillName(""); setDescription(""); setSource(""); setDemo(""); setInstructions("");
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Publishing failed. Please try again.");
+      setMessage(err instanceof Error ? err.message : "Submission failed. Please try again.");
     } finally { setBusy(false); }
   }
 
