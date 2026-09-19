@@ -1,51 +1,70 @@
 # SkillShelf
 
-SkillShelf is a community discovery platform for AI skills that help people build websites.
+SkillShelf is a production community discovery platform for real AI skills that help people build websites.
 
-SkillShelf does not ship seeded skills, fake demos, placeholder examples, testimonials, or fabricated metrics. Published listings come from creators and use the data they provide.
+## What it does
 
-## Product routes
+- Discover published skills.
+- Browse skills by AI tool.
+- Open a dedicated page for each published skill.
+- See the creator, organization, instructions, source, and creator-provided demo.
+- Keep platform associations explicit: a skill only appears under the AI tool stored on its database record.
 
-- / — discovery home
-- /skills — all published website skills
-- /skills/[slug] — dedicated skill pages
-- /ai — browse by AI tool
-- /ai/[slug] — tool-specific discovery
-- /submit — creator publishing flow
+SkillShelf does **not** invent skills, demos, testimonials, metrics, source code, or creator information.
 
-## Creator submissions
+## Production stack
 
-Every published skill must contain real creator-provided information:
-
-- Skill name and description
-- Actual AI-tool association
-- Creator and organization
-- Real source or code URL
-- Real demo URL
-- Actual usage instructions
-
-A skill is shown on an AI-tool page only when its database record explicitly names that AI tool. Empty tool pages remain empty.
-
-## Ownership
-
-SkillShelf is maintained by **Sohail Khan** (GitHub: SohailKhan0525).
-
-## Stack
-
-- Next.js
-- React
+- Next.js 16
+- React 19
 - TypeScript
+- Supabase PostgreSQL + Row Level Security
 - Vercel
-- Supabase
+- GitHub Actions
+
+## Real database
+
+The production Supabase project is active and contains the SkillShelf schema:
+
+- `profiles`
+- `skills`
+- `skill_versions`
+- `skill_examples`
+
+Published content is read from Supabase at runtime. There are no seeded placeholder skills in the production catalog.
+
+Environment variables:
+
+```text
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+```
+
+Never commit a Supabase service-role key or any private credential.
+
+## Routes
+
+- `/` — discovery
+- `/skills` — published skill library
+- `/skills/[slug]` — skill detail
+- `/ai` — AI tool directory
+- `/ai/[slug]` — skills explicitly associated with one AI tool
+- `/submit` — creator requirements
 
 ## Local development
 
+```bash
 npm install
 npm run dev
+npm run build
+```
 
 ## Documentation
 
-- Creator Guide: GUIDE.md
-- Contributing: CONTRIBUTING.md
-- Security: SECURITY.md
-- Code of Conduct: CODE_OF_CONDUCT.md
+- [Creator Guide](GUIDE.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security](SECURITY.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## Ownership
+
+SkillShelf is maintained by Sohail Khan through the Qofeno organization.
