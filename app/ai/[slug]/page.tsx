@@ -1,18 +1,3 @@
 import Link from "next/link";
-
-const platforms: Record<string,string> = {
-  claude: "Claude",
-  codex: "Codex",
-  gemini: "Gemini",
-  cursor: "Cursor",
-};
-
-export default async function Platform({params}:{params:Promise<{slug:string}>}){
-  const {slug}=await params;
-  const name=platforms[slug] ?? "AI tool";
-  return <main>
-    <nav className="nav"><Link href="/" className="brand">SKILLSHELF</Link><Link href="/ai">All AI tools</Link></nav>
-    <section className="page-head shell"><p className="eyebrow">AI TOOL · WEBSITE BUILDING</p><h1>Website skills for {name}.</h1><p>Explore community skills that help you plan, design, build, or improve websites with {name}.</p></section>
-    <section className="shell list"><Link className="list-item" href="/skills/frontend-ui-ux-wizard"><span>Website design</span><div><small>{name}</small><h2>Frontend UI & UX Wizard</h2><p>Understand the skill, see who it is for, and learn how to start.</p></div><b>View ↗</b></Link></section>
-  </main>
-}
+const platforms:Record<string,string>={chatgpt:"ChatGPT",claude:"Claude",codex:"Codex",gemini:"Gemini",cursor:"Cursor"};
+export default async function Platform({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const name=platforms[slug]??"AI tool";return <main><nav className="nav"><Link href="/" className="brand">SKILLSHELF</Link><Link href="/ai">All AI tools</Link></nav><section className="page-head shell"><p className="eyebrow">AI TOOL · WEBSITE BUILDING</p><h1>Website skills for {name}.</h1><p>Explore community skills that help you plan, design, build, or improve websites with {name}.</p></section><section className="shell list"><Link className="list-item" href="/skills/frontend-ui-ux-wizard"><span>Website design</span><div><small>{name}</small><h2>Frontend UI & UX Wizard</h2><p>Understand the skill, see the demo, read the source, and learn how to start.</p></div><b>View ↗</b></Link></section></main>}
