@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/site-footer";
 "use client";
 
 
@@ -116,5 +117,5 @@ export default function ReviewPage() {
         <strong>7. No misleading claims or unrelated template</strong>
       </aside>
     </section>
-  </main>;
+  <SiteFooter /></main>;
 }
