@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Notifications from "./notifications";
 
 export default function SiteNav() {
   return (
@@ -8,6 +9,7 @@ export default function SiteNav() {
         <Link href="/skills">Skills</Link>
         <Link href="/ai">AI tools</Link>
         <Link href="/submit">Publish</Link>
+        <Notifications />
         <Link href="/profile">Profile</Link>
       </div>
     </nav>
