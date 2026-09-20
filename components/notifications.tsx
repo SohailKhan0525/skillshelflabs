@@ -19,18 +19,22 @@ export default function Notifications() {
     let mounted = true;
     const supabase = getSupabaseBrowser();
 
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user || !mounted) return;
+
       const { data } = await supabase
         .from("notifications")
         .select("id,title,message,read_at,created_at")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(12);
+
       if (mounted) setItems((data ?? []) as Notification[]);
 
-      const channel = supabase
+      channel = supabase
         .channel("creator-notifications")
         .on("postgres_changes", {
           event: "INSERT",
@@ -41,15 +45,13 @@ export default function Notifications() {
           if (mounted) setItems(current => [payload.new as Notification, ...current].slice(0, 12));
         })
         .subscribe();
-
-      return () => { void supabase.removeChannel(channel); };
     }
 
-    let cleanup: (() => void) | undefined;
-    void load().then(value => { cleanup = value; });
+    void load();
+
     return () => {
       mounted = false;
-      cleanup?.();
+      if (channel) void supabase.removeChannel(channel);
     };
   }, []);
 
