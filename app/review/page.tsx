@@ -1,5 +1,6 @@
-import SiteFooter from "../../components/site-footer";
 "use client";
+
+import SiteFooter from "../../components/site-footer";
 
 
 import { useEffect, useState } from "react";
