@@ -1,6 +1,5 @@
 "use client";
 
-export const metadata = { robots: { index: false, follow: false } };
 
 import { useEffect, useState } from "react";
 import { getSupabaseBrowser } from "../../lib/supabase-browser";
