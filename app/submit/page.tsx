@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/site-footer";
 import SiteNav from "../../components/site-nav";
 import CreatorAuth from "./CreatorAuth";
 
@@ -18,6 +19,6 @@ export default function Submit() {
       <section className="shell form-card">
         <CreatorAuth />
       </section>
-    </main>
+    <SiteFooter /></main>
   );
 }
