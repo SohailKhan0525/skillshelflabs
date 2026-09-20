@@ -1,4 +1,4 @@
-import SiteFooter from "../../components/site-footer";
+import SiteFooter from "../../../components/site-footer";
 import Link from "next/link";
 import { getSupabase } from "../../../lib/supabase";
 import SiteNav from "../../../components/site-nav";
