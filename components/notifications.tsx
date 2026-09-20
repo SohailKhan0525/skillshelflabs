@@ -61,7 +61,6 @@ export default function Notifications() {
     setItems(current => current.map(item => item.id === id ? { ...item, read_at: new Date().toISOString() } : item));
   }
 
-  if (!items.length) return null;
 
   return (
     <div className="notification-wrap">
