@@ -7,7 +7,8 @@ export default function SiteNav() {
       <div className="nav-links">
         <Link href="/skills">Skills</Link>
         <Link href="/ai">AI tools</Link>
-        <Link href="/submit">Publish</Link>\n        <Link href="/profile">Profile</Link>
+        <Link href="/submit">Publish</Link>
+        <Link href="/profile">Profile</Link>
       </div>
     </nav>
   );
