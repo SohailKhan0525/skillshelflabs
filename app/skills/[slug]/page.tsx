@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/site-footer";
 import Link from "next/link";
 import { getSupabase } from "../../../lib/supabase";
 import SiteNav from "../../../components/site-nav";
@@ -34,5 +35,5 @@ export default async function Skill({ params }: { params: Promise<{ slug: string
       </article>
       <aside><span>AI TOOL</span><strong>{s.ai_tool}</strong><span>CATEGORY</span><strong>{s.category}</strong><span>CREATOR</span><strong>{s.creator_name || "Unknown creator"}</strong><span>ORGANIZATION</span><strong>{s.organization_name || "—"}</strong></aside>
     </section>
-  </main>;
+  <SiteFooter /></main>;
 }
