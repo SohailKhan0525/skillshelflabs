@@ -1,3 +1,4 @@
+import SiteFooter from "../../../components/site-footer";
 import SiteNav from "../../../components/site-nav";
 import SubmitForm from "../SubmitForm";
 
@@ -20,6 +21,6 @@ export default function SkillSubmission() {
         <p className="form-note">Every submission is private while pending review. A SkillShelf reviewer must approve it before it appears publicly.</p>
         <SubmitForm />
       </section>
-    </main>
+    <SiteFooter /></main>
   );
 }
