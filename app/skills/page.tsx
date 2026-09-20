@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/site-footer";
 import Link from "next/link";
 import { getSupabase } from "../../lib/supabase";
 import SiteNav from "../../components/site-nav";
@@ -9,5 +10,5 @@ export default async function Skills(){
  const skillList=skills ?? [];
  return <main><SiteNav />
  <section className="page-head shell"><p className="eyebrow">WEBSITE SKILL LIBRARY</p><h1>Skills, explained simply.</h1><p>Browse AI skills for building websites. Each page is written so someone new to AI skills—or an experienced vibe coder—can quickly understand what the skill does and when to use it.</p></section>
- <section className="shell list">{skillList.length?skillList.map(s=><Link className="list-item" href={"/skills/"+s.slug} key={s.slug}><span>{s.category}</span><div><small>{s.ai_tool}</small><h2>{s.name}</h2></div><b>Understand ↗</b></Link>):<div className="empty-state"><span>NO PUBLISHED SKILLS</span><h2>The library is empty.</h2><Link href="/submit" className="button">Publish a skill</Link></div>}</section></main>
+ <section className="shell list">{skillList.length?skillList.map(s=><Link className="list-item" href={"/skills/"+s.slug} key={s.slug}><span>{s.category}</span><div><small>{s.ai_tool}</small><h2>{s.name}</h2></div><b>Understand ↗</b></Link>):<div className="empty-state"><span>NO PUBLISHED SKILLS</span><h2>The library is empty.</h2><Link href="/submit" className="button">Publish a skill</Link></div>}</section><SiteFooter /></main>
 }
