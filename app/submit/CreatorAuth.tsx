@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Turnstile } from "@marsidev/react-turnstile";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { getSupabaseBrowser } from "../../lib/supabase-browser";
 
 const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -13,7 +13,7 @@ export default function CreatorAuth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -44,6 +44,7 @@ export default function CreatorAuth() {
       return;
     }
 
+    const captchaToken = turnstileSiteKey ? turnstileRef.current?.getResponse() ?? "" : "";
     if (turnstileSiteKey && !captchaToken) {
       setMessage("Please complete the security check.");
       return;
@@ -86,7 +87,7 @@ export default function CreatorAuth() {
       }
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Authentication failed. Please try again.");
-      setCaptchaToken("");
+      turnstileRef.current?.reset();
     } finally {
       setBusy(false);
     }
@@ -95,8 +96,8 @@ export default function CreatorAuth() {
   return (
     <div>
       <div className="auth-toggle">
-        <button type="button" className={mode === "signup" ? "active" : ""} onClick={() => { setMode("signup"); setMessage(""); setCaptchaToken(""); }}>Create creator account</button>
-        <button type="button" className={mode === "signin" ? "active" : ""} onClick={() => { setMode("signin"); setMessage(""); setCaptchaToken(""); }}>Sign in</button>
+        <button type="button" className={mode === "signup" ? "active" : ""} onClick={() => { setMode("signup"); setMessage(""); turnstileRef.current?.reset(); }}>Create creator account</button>
+        <button type="button" className={mode === "signin" ? "active" : ""} onClick={() => { setMode("signin"); setMessage(""); turnstileRef.current?.reset(); }}>Sign in</button>
       </div>
 
       <form className="publish-form" onSubmit={authenticate}>
@@ -109,11 +110,11 @@ export default function CreatorAuth() {
         {turnstileSiteKey && (
           <div className="captcha-panel">
             <Turnstile
+              ref={turnstileRef}
               siteKey={turnstileSiteKey}
-              onSuccess={(token) => setCaptchaToken(token)}
-              onExpire={() => setCaptchaToken("")}
+              onSuccess={() => setMessage("")}
+              onExpire={() => setMessage("")}
               onError={() => {
-                setCaptchaToken("");
                 setMessage("Security check failed. Please try again.");
               }}
             />
