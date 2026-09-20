@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/site-footer";
 "use client";
 
 import { useEffect, useState } from "react";
@@ -130,6 +131,6 @@ export default function ProfilePage() {
           </button>
         </aside>
       </section>
-    </main>
+    <SiteFooter /></main>
   );
 }
