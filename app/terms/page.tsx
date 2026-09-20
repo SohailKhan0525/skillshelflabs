@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/site-footer";
 import SiteNav from "../../components/site-nav";
 
 export const metadata = {
@@ -17,5 +18,5 @@ export default function Terms() {
     <h2>7. Your content remains yours</h2><p>You retain ownership of your submitted material. You grant SkillShelf permission to display the submitted listing, metadata, source/demo links, and previews as part of the discovery service.</p>
     <h2>8. No guarantee of availability</h2><p>SkillShelf may change, suspend, or remove features and does not guarantee that third-party source or demo URLs will remain available.</p>
     <h2>9. Acceptance</h2><p>By publishing, you confirm that you have read these creator terms and that your submission satisfies them.</p>
-  </article></section></main>;
+  </article></section><SiteFooter /></main>;
 }
