@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import {
   Sparkles,
   Terminal,
@@ -14,7 +14,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number = 0) => ({
     opacity: 1,
@@ -22,7 +22,7 @@ const fadeUp = {
     transition: {
       delay: i * 0.1,
       duration: 0.65,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   }),
 };
