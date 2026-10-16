@@ -24,7 +24,7 @@ const steps = [
 ];
 
 function Logo({ symbolOnly = false }: { symbolOnly?: boolean }) {
-  return <span className="brand-lockup"><span className="brand-symbol" aria-hidden="true">Q</span>{!symbolOnly && <span className="brand-name">qofeno</span>}</span>;
+  return <span className="brand-lockup"><img className="brand-symbol-image" src="/brand/qofeno-symbol.svg" alt="" />{!symbolOnly && <span className="brand-name">qofeno</span>}</span>;
 }
 
 function Verifier() {
