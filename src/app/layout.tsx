@@ -5,21 +5,23 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SkillShelf Labs | Next-Gen Engineering & AI Product Studio",
+  title: "Qofeno | Security answers from your own evidence",
   description:
-    "Where ambitious learners, builders, and engineers forge production-grade software, AI systems, and interactive web experiences.",
+    "Prepare AI governance documents and answer security questionnaires using facts you provide. Template mode uses no AI and keeps data in your browser.",
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
-      <body className={`${inter.className} antialiased bg-[#050508] text-slate-100`}>
-        {children}
-      </body>
+    <html lang="en">
+      <head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        />
+        <link rel="icon" type="image/svg+xml" href="/brand/qofeno-symbol.svg" />
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
