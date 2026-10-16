@@ -30,7 +30,7 @@ main { overflow: clip; }
 .site-header { position: sticky; top: 12px; z-index: 20; display: flex; align-items: center; gap: 26px; width: min(1320px, calc(100% - 56px)); min-height: 72px; margin: 12px auto -84px; padding: 10px 15px 10px 20px; border: 1px solid rgba(255,255,255,.75); border-radius: 999px; background: rgba(255,255,255,.76); box-shadow: 0 8px 35px rgba(54,67,59,.09), inset 0 1px rgba(255,255,255,.9); backdrop-filter: blur(16px) saturate(1.4); }
 .brand-link { display: inline-flex; flex-shrink: 0; min-width: 96px; }
 .brand-lockup { display: inline-flex; align-items: center; gap: 9px; }
-.brand-symbol { display: inline-grid; place-items: center; width: 33px; height: 33px; color: #fff; border-radius: 11px 11px 11px 3px; background: var(--ink); font-family: Georgia, serif; font-size: 24px; font-weight: 700; line-height: 1; }
+.brand-symbol-image { display: block; width: 33px; height: 42px; object-fit: contain; flex-shrink: 0; }\n.brand-symbol { display: inline-grid; place-items: center; width: 33px; height: 33px; color: #fff; border-radius: 11px 11px 11px 3px; background: var(--ink); font-family: Georgia, serif; font-size: 24px; font-weight: 700; line-height: 1; }
 .brand-name { font-size: 20px; font-weight: 650; letter-spacing: -.075em; }
 .site-header nav { display: flex; align-items: center; gap: clamp(15px, 2.2vw, 29px); margin: 0 auto; }
 .site-header nav a { padding: 9px 0; color: var(--ink-2); font-size: 13px; font-weight: 500; transition: color .2s; }
@@ -183,7 +183,7 @@ h2 { margin: 0; font-size: clamp(40px, 5.1vw, 72px); font-weight: 600; line-heig
 .limits-content { position: relative; z-index: 1; max-width: 770px; padding-top: 25px; }
 .limits-content p { max-width: 660px; margin: 22px 0 27px; color: var(--ink-2); font-size: 16px; }
 .limits-symbol { display: grid; place-items: center; width: clamp(130px, 21vw, 280px); aspect-ratio: .78; opacity: .1; transform: rotate(-9deg); }
-.limits-symbol .brand-symbol { width: 100%; height: auto; aspect-ratio: .8; border-radius: 38%; font-size: clamp(120px, 21vw, 280px); }
+.limits-symbol .brand-symbol-image { width: 100%; height: auto; max-height: 290px; filter: opacity(.25); }
 .faq-section { background: var(--paper); }
 .faq-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 10%; padding-top: 37px; }
 .faq-list { border-top: 1px solid #cfc8ba; }
@@ -193,7 +193,7 @@ h2 { margin: 0; font-size: clamp(40px, 5.1vw, 72px); font-weight: 600; line-heig
 .faq-item p { max-width: 620px; margin: -3px 35px 22px 0; color: var(--ink-2); font-size: 14px; line-height: 1.7; }
 .site-footer { padding: 48px max(28px, calc((100vw - 1160px) / 2)) 20px; background: var(--ink); color: white; }
 .footer-main { display: flex; align-items: center; justify-content: space-between; gap: 25px; padding-bottom: 35px; border-bottom: 1px solid rgba(255,255,255,.2); }
-.site-footer .brand-symbol { color: var(--ink); background: white; }
+.site-footer .brand-symbol-image { filter: invert(1); }
 .site-footer .brand-name { color: white; }
 .footer-main > span { margin-right: auto; color: #b9c0ba; font-size: 13px; }
 .site-footer .button-dark { border-color: white; background: white; color: var(--ink); }
@@ -217,7 +217,7 @@ h2 { margin: 0; font-size: clamp(40px, 5.1vw, 72px); font-weight: 600; line-heig
 @media (max-width: 700px) {
   html { scroll-padding-top: 80px; }
   .site-header { top: 7px; width: calc(100% - 20px); min-height: 62px; margin-top: 7px; margin-bottom: -69px; padding: 8px 9px 8px 13px; gap: 10px; }
-  .brand-symbol { width: 30px; height: 30px; }
+  .brand-symbol-image { width: 28px; height: 35px; }
   .brand-name { font-size: 18px; }
   .site-header nav { display: none; }
   .nav-cta { min-height: 41px; padding: 0 13px; font-size: 10px; }
