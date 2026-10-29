@@ -19,22 +19,34 @@ function outline(points: Point[], radius = 12) {
   return `M${p(corners[0].a)} ${corners.map((c,i)=>`Q${p(c.c)} ${p(c.b)} L${p(corners[(i+1)%corners.length].a)}`).join(" ")} Z`;
 }
 
+// Boundary of a polygon swept down the screen: its visible extruded side wall.
+function extruded(points: Point[], height: number, radius = 12) {
+  const boundary: Point[]=[];
+  points.forEach((point,i)=>{
+    const previous=points[(i+points.length-1)%points.length], next=points[(i+1)%points.length];
+    const incoming=point[0]<previous[0]?height:0;
+    const outgoing=next[0]<point[0]?height:0;
+    boundary.push([point[0],point[1]+incoming]);
+    if(incoming!==outgoing)boundary.push([point[0],point[1]+outgoing]);
+  });
+  return outline(boundary,radius);
+}
+
 function Key({x,y,width=78,depth=68,label,green=false,command=false,shape,id,onPress}: {
   x:number;y:number;width?:number;depth?:number;label?:string;green?:boolean;command?:boolean;shape?:Point[];id:string;onPress:(id:string)=>void;
 }) {
   const polygon = shape || [[0,0],[width,0],[width,depth],[0,depth]] as Point[];
   const upper = outline(polygon.map(([a,b])=>project(x+a,y+b,28)),12);
   const lower = outline(polygon.map(([a,b])=>project(x+a,y+b,8)),12);
-  const first=project(x,y,28), last=project(x,y+depth,28);
+  const side=extruded(polygon.map(([a,b])=>project(x+a,y+b,28)),20);
   return <g className="physical-key" data-key={id} role="button" tabIndex={0} aria-label={id === "connect" ? "Preview wallet connection" : label === "Learn more" ? "Learn about Minto" : `Press ${label || "command"} key`}
     onClick={()=>onPress(id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onPress(id)}}}>
     <path d={lower} transform="translate(5 5)" fill="#000" opacity=".10" stroke="none"/>
     <g className="key-body">
-      <path d={lower} fill={green ? "#66da4d" : "#c9c9c7"}/>
-      <path d={`${upper} M${p(first)} L${p([first[0],first[1]+20])} M${p(last)} L${p([last[0],last[1]+20])}`} fill={green ? "#9aff7e" : "url(#keyWhite)"}/>
+      <path d={side} fill={green ? "#66da4d" : "#d4d4d1"}/>
       <path d={upper} fill={green ? "url(#greenTop)" : "url(#keyWhite)"}/>
       <g transform={plane(x,y,28)} stroke="none" fill="#242622">
-        {command ? <path d="M28 24h24v24H28z M28 24c-16 0-16-15-7-15 7 0 7 7 7 15 M52 24c16 0 16-15 7-15-7 0-7 7-7 15 M28 48c-16 0-16 15-7 15 7 0 7-7 7-15 M52 48c16 0 16 15 7 15-7 0-7-7-7-15" fill="none" stroke="#d5d8d2" strokeWidth="1.8"/> : <text x={width/2} y={green ? 114 : depth/2+7} textAnchor="middle" fontSize={label && label.length>1 ? 14 : 22} fontWeight="650" letterSpacing={green ? 1.2 : .3}>{label}</text>}
+        {command ? <path transform="translate(14 7) scale(.65)" d="M28 24h24v24H28z M28 24c-16 0-16-15-7-15 7 0 7 7 7 15 M52 24c16 0 16-15 7-15-7 0-7 7-7 15 M28 48c-16 0-16 15-7 15 7 0 7-7 7-15 M52 48c16 0 16 15 7 15-7 0-7-7-7-15" fill="none" stroke="#d5d8d2" strokeWidth="1.8"/> : <text fontFamily="Arial, sans-serif" x={width/2} y={green ? 114 : depth/2+7} textAnchor="middle" fontSize={label && label.length>1 ? 14 : 22} fontWeight="650" letterSpacing={green ? 1.2 : .3}>{label}</text>}
       </g>
     </g>
   </g>;
@@ -126,7 +138,7 @@ export default function KeyboardScene({paused,reducedMotion,connected,replay,onC
 
       <g stroke="#31332f" strokeWidth="1.65" strokeLinejoin="round">
         <path d={lower} transform="translate(17 13)" fill="#000" opacity=".09" stroke="none"/>
-        <path d={lower} fill="url(#boardSide)"/>
+        <path d={extruded([[0,0],[580,0],[580,240],[0,240]].map(([x,y])=>project(x,y)),25,24)} fill="url(#boardSide)"/>
         <path d={shell} fill="#fff"/>
         <g transform={plane()} stroke="none">
           <rect x="114" y="16" width="440" height="50" rx="7" fill="#30332e"/>
@@ -170,8 +182,9 @@ export default function KeyboardScene({paused,reducedMotion,connected,replay,onC
         <rect x="541" y="79" width="119" height="109"/>
         {[[541,79],[660,79],[541,188],[660,188]].map(([x,y])=><rect key={`${x}-${y}`} x={x-3} y={y-3} width="6" height="6" fill="#fff"/>)}
       </g>
-      <g className="scene-cursor" transform="translate(620 130)" filter="url(#cursorShadow)">
+      <g transform="translate(620 130)"><g className="scene-cursor" filter="url(#cursorShadow)">
         <path d="m0 0 12 44q1 5 5 1l9-14 17-3q5-1 1-5L4-2Q-1-5 0 0Z" fill="#fff" stroke="#30322d" strokeWidth="1.7" strokeLinejoin="round"/>
+      </g>
       </g>
       <g className="tooltip" opacity="0">
         <rect x="688" y="227" width="196" height="57" rx="18" fill="#000" opacity=".025"/>

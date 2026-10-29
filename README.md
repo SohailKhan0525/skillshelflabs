@@ -13,7 +13,7 @@ npm run typecheck
 npm run build
 ```
 
-The production build exports a static site to `out/`. `vercel.json` configures installation and build commands for the existing Vercel project.
+The production build prerenders the hero into the standard Next.js `.next/` output. `vercel.json` configures installation and build commands for the existing Vercel project.
 
 ## The illustration
 
