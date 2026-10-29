@@ -1,25 +1,13 @@
 import type { Metadata } from "next";
-import "@fontsource-variable/inter";
+import "@fontsource-variable/manrope";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Qofeno | Security answers from your own evidence",
-  description:
-    "Prepare AI governance documents and answer security questionnaires using facts you provide. Template mode uses no AI and keeps data in your browser.",
-  robots: { index: true, follow: true },
+  title: "Minto — One click. Zero friction.",
+  description: "An interactive wallet connection concept. Hand-crafted vector illustrations, effortless motion, and a little keyboard you can play with.",
+  icons: { icon: "/icon.svg" },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
-        />
-        <link rel="icon" type="image/svg+xml" href="/brand/qofeno-symbol.svg" />
-      </head>
-      <body>{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en"><body>{children}</body></html>;
 }

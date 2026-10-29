@@ -1,9 +1,7 @@
-node_modules
-.next
-out
-dist
-.env*.local
-.DS_Store
+node_modules/
+.next/
+out/
+.env*
+.vercel/
 *.tsbuildinfo
 next-env.d.ts
-deploy-v2.mjs
