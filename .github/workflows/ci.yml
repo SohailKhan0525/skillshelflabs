@@ -13,16 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run TypeScript check
         run: npm run typecheck
+
+      - name: Test SVG animation behavior
+        run: npm test
 
       - name: Build Next.js production bundle
         run: npm run build

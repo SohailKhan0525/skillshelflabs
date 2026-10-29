@@ -1,12 +1,13 @@
 {
-  "name": "minto-interactive-hero",
+  "name": "qofeno-interactive-hero",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build --webpack",
     "start": "next start --hostname 0.0.0.0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.tsx"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "5.2.8",
@@ -16,9 +17,12 @@
     "react-dom": "19.3.1"
   },
   "devDependencies": {
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "jsdom": "^30.1.3",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3"
   }
 }
