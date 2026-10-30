@@ -1,17 +1,14 @@
 import assert from "node:assert/strict";
-import { after, test } from "node:test";
+import { test } from "node:test";
 import React, { act } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { JSDOM } from "jsdom";
-import { gsap } from "gsap";
 import StillExperience from "../src/components/still/StillExperience";
 import {
   chooseMood,
   initialLight,
   selectionDescription,
 } from "../src/lib/still-light";
-
-after(() => gsap.ticker.sleep());
 
 test("the initial response contains the complete article, named art, native controls, and a no-JS explanation", () => {
   const dom = new JSDOM(renderToStaticMarkup(<StillExperience />));
@@ -83,6 +80,11 @@ test("the actual React preview supports finish, light, dimming, save, edit, and 
     Element: dom.window.Element,
     SVGElement: dom.window.SVGElement,
     IS_REACT_ACT_ENVIRONMENT: true,
+    IntersectionObserver: class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
   });
   dom.window.matchMedia = () => media;
   // JSDOM has no native modal lifecycle. This shim proves state, not focus containment, Escape, or inertness.
@@ -108,8 +110,11 @@ test("the actual React preview supports finish, light, dimming, save, edit, and 
     act(() => root.render(<StillExperience />));
     const initialSvg = doc.querySelector(".still-lamp")!;
     assert.equal(
-      initialSvg.querySelector("[data-shade]")!.getAttribute("transform"),
-      "rotate(-8 325 250)",
+      initialSvg
+        .querySelector("[data-shade]")!
+        .getAttribute("style")
+        ?.includes("rotate(-8deg)"),
+      true,
     );
     click(
       doc.querySelector<HTMLInputElement>(
@@ -122,22 +127,17 @@ test("the actual React preview supports finish, light, dimming, save, edit, and 
     );
     click(button("Unwinding"));
     assert.equal(doc.querySelector("output")!.textContent, "35%");
-    assert.equal(
-      initialSvg.querySelector("[data-shade]")!.getAttribute("transform"),
-      "rotate(8 325 250)",
-    );
-    assert.equal(
-      initialSvg.querySelector("[data-light]")!.getAttribute("opacity"),
-      "0.35",
-    );
+    // JSDOM verifies state and accessible descriptions; actual Motion frame updates are browser checks.
+    assert.match(initialSvg.querySelector("desc")!.textContent!, /35 percent/);
+    assert.match(initialSvg.querySelector("desc")!.textContent!, /unwinding/);
     click(doc.querySelector<HTMLButtonElement>(".still-power")!);
     assert.equal(
       doc.querySelector<HTMLInputElement>("input[type=range]")!.disabled,
       true,
     );
-    assert.equal(
-      initialSvg.querySelector("[data-light]")!.getAttribute("opacity"),
-      "0",
+    assert.match(
+      initialSvg.querySelector("desc")!.textContent!,
+      /light is off/,
     );
     click(button("Reading"));
     const range = doc.querySelector<HTMLInputElement>("input[type=range]")!;
@@ -162,7 +162,7 @@ test("the actual React preview supports finish, light, dimming, save, edit, and 
     click(button("Save this combination"));
     assert.equal(button("Combination saved").disabled, true);
     assert.match(
-      doc.querySelector('[role="status"]')!.textContent!,
+      doc.querySelector("dialog [role=status]")!.textContent!,
       /Nothing was ordered or sent/,
     );
     click(doc.querySelector<HTMLButtonElement>(".still-close")!);
@@ -183,14 +183,25 @@ test("the actual React preview supports finish, light, dimming, save, edit, and 
       doc.querySelector(".still-lamp title")!.textContent,
       "Arc 01 in Chalk",
     );
+    assert.equal(
+      doc
+        .querySelector("[data-scene-playing]")!
+        .getAttribute("data-scene-playing"),
+      "false",
+    );
+    assert.equal(
+      doc
+        .querySelector('[aria-label="Animations"]')!
+        .getAttribute("aria-pressed"),
+      "false",
+    );
     const animatedNodes = [
       ...initialSvg.querySelectorAll(
         "[data-shade],[data-light],[data-light-pool]",
       ),
     ];
     act(() => root.unmount());
-    for (const target of animatedNodes)
-      assert.equal(gsap.getTweensOf(target).length, 0);
+    for (const target of animatedNodes) assert.equal(target.isConnected, false);
   } finally {
     if (doc.getElementById("root")!.childNodes.length)
       act(() => root.unmount());

@@ -9,15 +9,15 @@ The chosen direction is warm editorial product design: paper, olive, terracotta,
 | Device | Purpose | Cost and simpler alternative |
 | --- | --- | --- |
 | Original SVG lamp | Makes finish and lighting decisions directly visible | Small authored SVG; a static picture would not communicate the interactive states |
-| Short shade rotation | Shows the change between reading and unwinding | Existing GSAP, no new library; immediate final state under reduced motion |
+| Short shade rotation | Shows the change between reading and unwinding | Motion.dev, explicit requested library; immediate final state under reduced motion |
 | Warm light gradient | Explains the switch and dimmer | Bounded SVG paint; flat opacity would provide less spatial context |
 | Serif/italic display contrast | Establishes a quiet, tactile identity and hierarchy | System font; no added font requests |
-| Technical drawing | Explains the fictional object's proportions | Static SVG with a textual equivalent in the specification list |
+| Technical drawing | Explains the fictional object's proportions | Finite Motion.dev path drawing with a textual equivalent in the specification list |
 | Editorial rows and varied section lengths | Separates product choice, rationale, specification, and questions | Plain responsive CSS; no carousel or card-grid dependency |
 
 No ambient loops, delayed hero content, scroll hijacking, invented customer claims, real commerce actions, external image services, or persistent user data were added. The concept is labelled next to the primary interaction and explained in the FAQ.
 
-## Actual evidence
+## Initial release evidence (before the Motion.dev expansion)
 
 - Nine Node/JSDOM tests passed: six existing keyboard-animation regressions and three new tests covering server-rendered semantics, selection rules, and the complete lamp/configuration interaction flow.
 - The local production compiler, TypeScript check, and static prerender passed. The managed executor required a temporary, external shim for an unavailable libuv memory-telemetry call. That shim is not part of this repository or deployment.
@@ -32,3 +32,18 @@ No ambient loops, delayed hero content, scroll hijacking, invented customer clai
 No automated browser accessibility scan, screen-reader session, physical mobile-device session, cross-browser run, field performance measurement, or mobile viewport screenshot is claimed. The browser interface did not expose viewport resizing; desktop overflow results do not establish mobile reflow. Responsive rules are authored for narrow, tablet, and wide layouts. Reduced-motion final states and cleanup were exercised in DOM tests, not with an emulated operating-system preference in the live browser.
 
 The saved combination exists only in memory and resets on refresh. The fictional brand, product, dimensions, and material idea are demonstration content, not manufacturing or sales claims.
+
+
+## Motion.dev expansion
+
+The explicit request for Motion.dev overrides the previous decision to reuse GSAP. The Still route now uses pinned Motion 14.9.0. The existing root demo keeps GSAP.
+
+- Four-second shade, light-pool, and window-light choreography, with an SVG headline underline. Replay restarts the scene; stop, finish selection, mood, switch, dimmer, and dialog opening interrupt it. Selected product state remains authoritative.
+- One-time section movement and technical-drawing path reveals; spring hover/press feedback. Essential content is present in the server response.
+- A page-wide motion switch; system reduced motion always wins. No automatic sequence loops indefinitely.
+- 240 authored parameter configurations across 24 executable families. Only a selected, onscreen player runs. Search, family filtering, pagination, replay, JSON copy/fallback, and configuration inspection are available. Native buttons accompany drag/pointer previews.
+- The collection is shared with the updated skill. The names describe implemented behavior; illustrative charts and loading states are labelled as demos. Configuration counts are not verification counts.
+
+### Validation scope for this update
+
+The automated checks cover all records, both rendering modes, preserved product state, and the existing keyboard hero. Browser verification follows deployment and is recorded in the delivery evidence. No emulated mobile viewport, physical device, screen reader, accessibility conformance, or field performance claim is made.

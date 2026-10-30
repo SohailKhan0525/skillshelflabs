@@ -1,52 +1,39 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
-import { gsap } from "gsap";
+import { useId } from "react";
+import { motion } from "motion/react";
 import { finishes, type LightSelection } from "../../lib/still-light";
 
-type Props = { selection: LightSelection; reducedMotion: boolean };
+type Props = {
+  selection: LightSelection;
+  reducedMotion: boolean;
+  playing?: boolean;
+  run?: number;
+};
 
-/** Original SVG product concept. HTML controls supply all interaction semantics. */
-export default function LampScene({ selection, reducedMotion }: Props) {
+/** Original SVG product scene, animated with Motion.dev. State always wins over playback. */
+export default function LampScene({
+  selection,
+  reducedMotion,
+  playing = false,
+  run = 0,
+}: Props) {
   const id = useId().replace(/:/g, "");
-  const svg = useRef<SVGSVGElement>(null);
   const finish = finishes.find((item) => item.id === selection.finish)!;
-
-  useEffect(() => {
-    const root = svg.current;
-    if (!root) return;
-    const shade = root.querySelector("[data-shade]");
-    const light = root.querySelector("[data-light]");
-    const pool = root.querySelector("[data-light-pool]");
-    const angle = selection.mood === "reading" ? -8 : 8;
-    const duration = reducedMotion ? 0 : 0.55;
-    const tweens = [
-      gsap.to(shade, {
-        attr: { transform: `rotate(${angle} 325 250)` },
-        duration,
-        ease: "power3.out",
-        overwrite: true,
-      }),
-      gsap.to(light, {
-        attr: { opacity: selection.lightOn ? selection.brightness / 100 : 0 },
-        duration: reducedMotion ? 0 : 0.24,
-        overwrite: true,
-      }),
-      gsap.to(pool, {
-        attr: { opacity: selection.lightOn ? selection.brightness / 100 : 0 },
-        duration: reducedMotion ? 0 : 0.24,
-        overwrite: true,
-      }),
-    ];
-    return () => {
-      tweens.forEach((tween) => tween.kill());
-    };
-  }, [selection.brightness, selection.lightOn, selection.mood, reducedMotion]);
+  const angle = selection.mood === "reading" ? -8 : 8;
+  const intensity = selection.lightOn ? selection.brightness / 100 : 0;
+  const choreograph = playing && !reducedMotion;
+  const lightTransition = {
+    duration: reducedMotion ? 0 : choreograph ? 4 : 0.25,
+    ease: "easeInOut" as const,
+  };
+  const colorTransition = { duration: reducedMotion ? 0 : 0.45 };
 
   return (
     <svg
-      ref={svg}
       className="still-lamp"
+      data-scene-playing={choreograph}
+      data-scene-run={run}
       viewBox="0 0 680 650"
       role="img"
       aria-labelledby={`${id}-title ${id}-desc`}
@@ -62,16 +49,56 @@ export default function LampScene({ selection, reducedMotion }: Props) {
       </desc>
       <defs>
         <linearGradient id={`${id}-body`} x1="0" x2="1" y1="0.15" y2="0.5">
-          <stop offset="0" stopColor={finish.dark} />
-          <stop offset="0.22" stopColor={finish.color} />
-          <stop offset="0.55" stopColor={finish.light} />
-          <stop offset="0.83" stopColor={finish.color} />
-          <stop offset="1" stopColor={finish.dark} />
+          <motion.stop
+            offset="0"
+            initial={false}
+            animate={{ stopColor: finish.dark }}
+            transition={colorTransition}
+          />
+          <motion.stop
+            offset="0.22"
+            initial={false}
+            animate={{ stopColor: finish.color }}
+            transition={colorTransition}
+          />
+          <motion.stop
+            offset="0.55"
+            initial={false}
+            animate={{ stopColor: finish.light }}
+            transition={colorTransition}
+          />
+          <motion.stop
+            offset="0.83"
+            initial={false}
+            animate={{ stopColor: finish.color }}
+            transition={colorTransition}
+          />
+          <motion.stop
+            offset="1"
+            initial={false}
+            animate={{ stopColor: finish.dark }}
+            transition={colorTransition}
+          />
         </linearGradient>
         <linearGradient id={`${id}-shade`} x1="0.1" x2="0.9" y1="0" y2="0.8">
-          <stop offset="0" stopColor={finish.light} />
-          <stop offset="0.5" stopColor={finish.color} />
-          <stop offset="1" stopColor={finish.dark} />
+          <motion.stop
+            offset="0"
+            initial={false}
+            animate={{ stopColor: finish.light }}
+            transition={colorTransition}
+          />
+          <motion.stop
+            offset="0.5"
+            initial={false}
+            animate={{ stopColor: finish.color }}
+            transition={colorTransition}
+          />
+          <motion.stop
+            offset="1"
+            initial={false}
+            animate={{ stopColor: finish.dark }}
+            transition={colorTransition}
+          />
         </linearGradient>
         <linearGradient id={`${id}-beam`} x1="0" x2="0" y1="0" y2="1">
           <stop stopColor="#ffecb8" stopOpacity="0.65" />
@@ -93,7 +120,17 @@ export default function LampScene({ selection, reducedMotion }: Props) {
       </defs>
 
       {/* A sunlit wall and shelf establish the scale and setting of the object. */}
-      <path d="M0 0H190L550 650H0Z" fill="#fffdf3" opacity="0.18" />
+      <motion.path
+        key={`window-${run}`}
+        d="M0 0H190L550 650H0Z"
+        fill="#fffdf3"
+        initial={reducedMotion ? false : { x: 0, opacity: 0.18 }}
+        animate={{
+          x: choreograph ? [0, 38, -15, 0] : 0,
+          opacity: choreograph ? [0.18, 0.36, 0.22, 0.18] : 0.18,
+        }}
+        transition={{ duration: reducedMotion ? 0 : 4, ease: "easeInOut" }}
+      />
       <path
         d="M0 115 301 650M0 280 202 650"
         stroke="#fdf9eb"
@@ -113,14 +150,22 @@ export default function LampScene({ selection, reducedMotion }: Props) {
         fill={`url(#${id}-plinth)`}
       />
       <ellipse cx="388.5" cy="553" rx="178.5" ry="39" fill="#e9deca" />
-      <ellipse
+      <motion.ellipse
+        key={`pool-${run}`}
+        initial={reducedMotion ? false : { opacity: intensity, cx: 322 }}
+        animate={{
+          opacity: choreograph
+            ? [intensity, intensity * 0.35, intensity, intensity]
+            : intensity,
+          cx: choreograph ? [322, 372, 284, 322] : 322,
+        }}
+        transition={lightTransition}
         data-light-pool
         cx="322"
         cy="551"
         rx="154"
         ry="32"
         fill={`url(#${id}-pool)`}
-        opacity="0.75"
       />
 
       {/* A book and loop of cable give the illustration a human, everyday scale. */}
@@ -184,12 +229,31 @@ export default function LampScene({ selection, reducedMotion }: Props) {
       <ellipse cx="316" cy="541" rx="9" ry="4" fill="#e8d6b2" />
       <path d="M316 537v5" stroke="#76654d" strokeWidth="1.5" />
 
-      <g data-shade transform="rotate(-8 325 250)">
-        <path
+      <motion.g
+        key={`shade-${run}`}
+        data-shade
+        data-target-angle={angle}
+        initial={reducedMotion ? false : { rotate: angle }}
+        style={{ transformOrigin: "325px 250px", transformBox: "view-box" }}
+        animate={{
+          rotate: choreograph ? [angle, angle + 23, angle - 12, angle] : angle,
+        }}
+        transition={{
+          duration: reducedMotion ? 0 : choreograph ? 4 : 0.55,
+          ease: "easeInOut",
+        }}
+      >
+        <motion.path
+          initial={reducedMotion ? false : { opacity: intensity }}
+          animate={{
+            opacity: choreograph
+              ? [intensity, intensity * 0.35, intensity, intensity]
+              : intensity,
+          }}
+          transition={lightTransition}
           data-light
           d="M218 330 143 544Q325 584 510 544L432 330Z"
           fill={`url(#${id}-beam)`}
-          opacity="0.75"
         />
         <path
           d="M214 327C214 205 436 205 436 327L435 333C413 357 235 357 215 333Z"
@@ -218,7 +282,7 @@ export default function LampScene({ selection, reducedMotion }: Props) {
           strokeWidth="2"
           opacity="0.6"
         />
-      </g>
+      </motion.g>
     </svg>
   );
 }

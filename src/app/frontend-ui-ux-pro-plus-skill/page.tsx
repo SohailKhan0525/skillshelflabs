@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import StillExperience from "@/components/still/StillExperience";
 import styles from "./still.module.css";
+import "@/components/motion-library/motion-library.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://skillshelflabs.vercel.app"),
