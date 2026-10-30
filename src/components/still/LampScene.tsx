@@ -124,7 +124,7 @@ export default function LampScene({ selection, reducedMotion }: Props) {
       />
 
       {/* A book and loop of cable give the illustration a human, everyday scale. */}
-      <g transform="translate(94 510) rotate(-8)">
+      <g transform="translate(466 530) scale(0.6) rotate(-8)">
         <path d="M0 0 123-12 151 18 24 31Z" fill="#6b7560" />
         <path d="m24 31 127-13v13L24 45Z" fill={`url(#${id}-paper)`} />
         <path d="M0 0 24 31v14L0 12Z" fill="#46563e" />
