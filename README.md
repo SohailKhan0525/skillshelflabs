@@ -1,5 +1,24 @@
 # Qofeno — One click. Zero friction.
 
+## Still — Frontend UI UX Pro Plus demonstration
+
+The additional route **[/frontend-ui-ux-pro-plus-skill/](https://skillshelflabs.vercel.app/frontend-ui-ux-pro-plus-skill/)** is an original editorial landing page for **Still**, a fictional lighting studio. The existing Qofeno homepage remains available at `/`.
+
+The demo applies the `frontend-ui-ux-pro-plus` skill's design-system, composition, animated-illustration, motion, accessibility, and review guidance:
+
+- Paper, terracotta, and olive colors; serif display typography paired with the existing self-hosted Manrope family; varied editorial sections instead of repeated cards.
+- An original SVG Arc 01 lamp with three finishes, adjustable brightness, on/off feedback, and two lighting moods that reposition its shade.
+- Existing GSAP handles short, interruptible SVG transitions. No additional animation or UI dependency is introduced. System reduced-motion changes are respected during the session; there are no ambient loops or delayed headlines.
+- Native radio controls, range input, disclosures, and a modal dialog. Every visible action has a working destination or local state transition.
+- Saving creates an in-memory snapshot. “Your saved light” restores that exact combination after further exploration. Nothing is ordered, persisted across reloads, or sent to a server.
+- Scoped CSS keeps the new art direction separate from the existing homepage. The page includes its own metadata and responsive layouts.
+
+`src/components/still/` contains the illustration and interaction implementation, `src/lib/still-light.ts` contains the selection model, and `src/app/frontend-ui-ux-pro-plus-skill/` contains the route and scoped styling. `tests/still-light.test.tsx` tests server-rendered semantics, state transitions, dimming, reduced-motion endpoints, save/restore behavior, and animation cleanup. DOM tests do not establish browser focus containment, rendered layout, or accessibility conformance.
+
+The product, brand, and specifications are explicitly a design concept. This page does not claim real manufacturing, stock, sustainability certification, customer reviews, or commerce capabilities.
+
+---
+
 A code-only Qofeno hero based on the supplied animation reference, using React, inline SVG, and GSAP on Next.js. All illustration geometry is authored in `src/components/KeyboardScene.tsx` and `src/lib/keyboard-geometry.ts`; there are no raster images, rendered videos, external embeds, or 3D assets.
 
 ## Development
