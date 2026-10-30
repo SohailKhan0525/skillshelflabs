@@ -22,6 +22,7 @@ test("the initial response contains the complete article, named art, native cont
     doc.querySelector("noscript")!.textContent!,
     /requires JavaScript/,
   );
+  assert.match(doc.querySelector("[data-shade]")!.getAttribute("style")!, /transform-origin:325px 250px/);
   const ids = [...doc.querySelectorAll("[id]")].map((node) => node.id);
   assert.equal(new Set(ids).size, ids.length);
   for (const node of doc.querySelectorAll(

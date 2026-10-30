@@ -234,7 +234,7 @@ export default function LampScene({
         data-shade
         data-target-angle={angle}
         initial={reducedMotion ? false : { rotate: angle }}
-        style={{ transformOrigin: "325px 250px", transformBox: "view-box" }}
+        style={{ originX: "325px", originY: "250px", transformBox: "view-box" }}
         animate={{
           rotate: choreograph ? [angle, angle + 23, angle - 12, angle] : angle,
         }}

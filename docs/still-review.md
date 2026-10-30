@@ -47,3 +47,10 @@ The explicit request for Motion.dev overrides the previous decision to reuse GSA
 ### Validation scope for this update
 
 The automated checks cover all records, both rendering modes, preserved product state, and the existing keyboard hero. Browser verification follows deployment and is recorded in the delivery evidence. No emulated mobile viewport, physical device, screen reader, accessibility conformance, or field performance claim is made.
+
+
+### Observed production checks
+
+The Motion update passed normal GitHub CI and reached Vercel production. In live Chromium, all 24 family selections mounted their first preset with ten results. SVG drawing progressed from `0 1` to `1 1`; shared selection chose the second button correctly; the drag alternative moved the object 15 pixels. Search, empty state, reset, pagination, JSON copy, and the global motion switch were exercised. Lamp playback was interrupted by selecting Unwinding, preserving its 35% state. Hero and gallery screenshots were inspected. These checks cover representative interactions; they are not individual visual certification of all 240 presets.
+
+The review exposed Motion's generated SVG transform origin replacing a plain static origin. The lamp now supplies explicit `originX`/`originY` values in its viewBox coordinate system. An SSR assertion protects that pivot. The 13 automated regression tests passed after the correction. Test files run serially because an existing wall-clock GSAP assertion missed its observation window under concurrent CPU load; the underlying homepage behavior was unchanged.
