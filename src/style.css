@@ -18,6 +18,7 @@
   [tabindex='-1']:focus { outline: none; }
   .site { overflow: clip; }
   .arrow { width: 28px; height: 28px; flex: 0 0 auto; }
+  .playback-icon { width: 13px; height: 13px; flex-shrink: 0; }
   .asterisk { width: 50px; height: 50px; flex-shrink: 0; }
   .magnet { display: inline-flex; }
   .eyebrow, .section-index, .hero-eyebrow, .header-caption, .header-actions, .hero-footer, .ticker, .sleeve-top, .sleeve-bottom, .record-caption small, .collection-directions, .collection-bottom, .frequency-aside, .no-shuffle, .ritual-circle small, .membership-label, .club-card-bottom, .club-card-top, .footer-top, .footer-bottom, .menu-top, .menu-bottom, .session-genre { font-family: 'DM Sans Variable', sans-serif; font-size: 11px; line-height: 1.45; font-weight: 600; letter-spacing: .055em; }
@@ -79,7 +80,7 @@
   .record-sticker { position: absolute; top: 62%; left: -4%; width: 138px; height: 138px; display: flex; justify-content: center; align-items: center; flex-direction: column; background: var(--paper); border-radius: 50%; transform: rotate(-15deg); box-shadow: 3px 5px 0 #00000012; }
   .record-sticker span { font-size: 15px; font-weight: 900; line-height: 1.1; letter-spacing: -.04em; }
   .record-sticker .asterisk { margin-top: 9px; width: 25px; height: 25px; }
-  .needle-button { position: absolute; bottom: 3%; right: 6%; display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 650; letter-spacing: .03em; }
+  .needle-button { position: absolute; bottom: 8%; right: 6%; display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 650; letter-spacing: .03em; }
   .needle-button > span { width: 38px; height: 38px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 10px; }
   .needle-button:hover > span { background: var(--ink); color: var(--acid); }
   .hero-footer { min-height: 95px; display: flex; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--rule); position: relative; z-index: 3; margin-top: 18px; font-size: 9px; }
@@ -377,10 +378,10 @@
     .hero-content { min-height: 665px; }
     .hero-copy { width: 100%; }
     h1 { font-size: 23.5vw; line-height: .98; }
-    .turntable { width: 77vw; top: 284px; right: -22vw; }
-    .hero-description { margin-top: 24px; gap: 20px; width: 52%; }
-    .hero-description p { font-size: 11px; max-width: 160px; }
-    .hero-description .pill-button { white-space: normal; text-align: left; max-width: 158px; line-height: 1.25; padding: 11px 15px; gap: 9px; }
+    .turntable { width: 77vw; top: 284px; right: -29vw; }
+    .hero-description { margin-top: 24px; gap: 20px; width: 45%; }
+    .hero-description p { font-size: 11px; max-width: 145px; }
+    .hero-description .pill-button { white-space: normal; text-align: left; max-width: 145px; line-height: 1.25; padding: 11px 15px; gap: 9px; }
     .record-sticker { top: 78%; left: 6%; width: 78px; height: 78px; }
     .record-sticker span { font-size: 9px; }
     .record-sticker .asterisk { width: 16px; height: 16px; }

@@ -58,3 +58,7 @@ Fonts are bundled locally through Fontsource. No external font or media hosts ar
 `npm run build` runs TypeScript checking and creates the production bundle. GitHub Actions repeats that build on pushes to `main` and pull requests.
 
 The previous implementation was replaced in a normal Git commit, preserving the prior source in repository history.
+
+## Browser verification
+
+The Vercel preview was checked in Chromium at desktop width and in a 390px review frame. Verified the curtain menu, collection navigation, native session dialogs, Escape dismissal, 24-second audio playback, local club-card confirmation, and motion-off layout. The menu navigation was specifically rechecked to confirm that unmounting its animation context preserves the page’s pinned gallery.
