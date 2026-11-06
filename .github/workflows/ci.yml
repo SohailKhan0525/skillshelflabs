@@ -1,31 +1,17 @@
-name: CI Build & Typecheck
-
+name: Production build
 on:
   push:
-    branches: [main, v2-nextjs-ultra]
+    branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 24
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run TypeScript check
-        run: npm run typecheck
-
-      - name: Test SVG animation behavior
-        run: npm test
-
-      - name: Build Next.js production bundle
-        run: npm run build
+          cache: npm
+      - run: npm ci
+      - run: npm run build

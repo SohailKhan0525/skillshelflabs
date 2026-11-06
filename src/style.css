@@ -1,0 +1,415 @@
+@layer reset, base, components, responsive;
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  body, h1, h2, h3, p { margin: 0; }
+  button, input { font: inherit; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button { cursor: pointer; }
+  a { color: inherit; text-decoration: none; }
+  button { color: inherit; }
+  img, svg { display: block; }
+}
+@layer base {
+  :root { --acid: #dfff00; --ink: #191a15; --paper: #f1f0e8; --pink: #f4a7bd; --rule: #191a1536; font-family: 'DM Sans Variable', sans-serif; color: var(--ink); background: var(--ink); font-synthesis: none; }
+  body { min-width: 320px; }
+  ::selection { color: var(--ink); background: var(--pink); }
+  button { border: 0; padding: 0; background: none; }
+  button:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 7px; }
+  [tabindex='-1']:focus { outline: none; }
+  .site { overflow: clip; }
+  .arrow { width: 28px; height: 28px; flex: 0 0 auto; }
+  .asterisk { width: 50px; height: 50px; flex-shrink: 0; }
+  .magnet { display: inline-flex; }
+  .eyebrow, .section-index, .hero-eyebrow, .header-caption, .header-actions, .hero-footer, .ticker, .sleeve-top, .sleeve-bottom, .record-caption small, .collection-directions, .collection-bottom, .frequency-aside, .no-shuffle, .ritual-circle small, .membership-label, .club-card-bottom, .club-card-top, .footer-top, .footer-bottom, .menu-top, .menu-bottom, .session-genre { font-family: 'DM Sans Variable', sans-serif; font-size: 11px; line-height: 1.45; font-weight: 600; letter-spacing: .055em; }
+  h1, .collection-heading h2, .sleeve-title, .ritual-title h2, .club h2, .member-title, .footer-word, .menu-link, .collection-end p, .session-info h2 { font-family: 'Anton', Impact, sans-serif; font-weight: 400; letter-spacing: -.025em; }
+  .section-pad { padding: 48px 4vw 100px; }
+  .section-index { display: flex; align-items: center; justify-content: space-between; padding-bottom: 26px; border-bottom: 1px solid var(--rule); }
+  .skip-link { position: fixed; top: 10px; left: 10px; padding: 12px 18px; z-index: 100; background: var(--ink); color: var(--acid); transform: translateY(-200%); }
+  .skip-link:focus { transform: none; }
+}
+@layer components {
+  .intro-curtain { display: none; position: fixed; inset: 0; background: var(--ink); color: var(--acid); z-index: 90; align-items: center; justify-content: center; flex-direction: column; gap: 25px; pointer-events: none; }
+  .intro-curtain span { font-size: 11px; letter-spacing: .12em; }
+  .intro-mark { width: 100px; height: 100px; }
+  .hero { background: var(--acid); padding: 0 4vw; position: relative; overflow: hidden; }
+  .header { display: flex; align-items: center; height: 91px; border-bottom: 1px solid var(--rule); position: relative; z-index: 4; }
+  .wordmark { font-size: 27px; line-height: 1; font-weight: 950; letter-spacing: -.075em; white-space: nowrap; }
+  .wordmark > span { font-size: 12px; vertical-align: top; display: inline-block; margin: 2px 0 0 3px; letter-spacing: 0; }
+  .header-caption { margin-left: 6vw; font-size: 10px; }
+  .header-actions { display: flex; align-items: center; gap: 42px; margin-left: auto; }
+  .sound-button { display: inline-flex; align-items: center; gap: 9px; font-size: 10px; letter-spacing: .03em; min-height: 44px; }
+  .equalizer { display: flex; align-items: center; gap: 2px; width: 18px; height: 17px; }
+  .equalizer i { display: block; height: 100%; width: 2px; background: currentColor; transform: scaleY(.3); transform-origin: center; }
+  .equalizer i:nth-child(2) { transform: scaleY(.7); }
+  .equalizer i:nth-child(4) { transform: scaleY(.5); }
+  .menu-button { display: flex; align-items: center; min-height: 44px; gap: 15px; }
+  .menu-button > span { width: 26px; display: grid; gap: 6px; }
+  .menu-button i { height: 1px; background: currentColor; display: block; }
+  .hero-eyebrow { display: flex; justify-content: space-between; padding-top: 29px; position: relative; z-index: 3; font-size: 10px; }
+  .hero-eyebrow > span:first-child { display: flex; align-items: center; gap: 9px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .hero-content { position: relative; min-height: clamp(580px, 48vw, 750px); display: flex; padding-top: 38px; }
+  .hero-copy { position: relative; z-index: 2; width: 55%; pointer-events: none; }
+  h1 { font-size: clamp(100px, 12.2vw, 194px); line-height: .96; letter-spacing: -.035em; }
+  .hero-line { display: block; overflow: hidden; padding-right: 10px; padding-bottom: 5px; margin-bottom: -5px; }
+  .hero-line > span { display: block; transform-origin: 0 100%; }
+  .title-period { color: var(--ink); }
+  .hero-description { display: flex; align-items: center; gap: 22px; margin-top: 26px; pointer-events: auto; }
+  .hero-description p { font-size: 13px; line-height: 1.5; letter-spacing: -.02em; }
+  .pill-button { padding: 15px 20px; min-height: 52px; border: 1px solid currentColor; border-radius: 99px; display: flex; align-items: center; gap: 25px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .pill-button .arrow { width: 21px; height: 21px; }
+  .pill-button:hover { background: var(--ink); color: var(--acid); }
+  .turntable { position: absolute; width: min(55vw, 865px); aspect-ratio: 1; top: 14px; right: -1vw; }
+  .record-outline { position: absolute; width: 92%; height: 92%; border: 1px solid #191a1530; border-radius: 50%; top: 2%; left: -1%; }
+  .record-outline::after { content: ''; position: absolute; border: 1px solid #191a1517; inset: -18px; border-radius: 50%; }
+  .record-coordinate { position: absolute; right: 13%; top: -6px; font-size: 9px; letter-spacing: .07em; }
+  .hero-disc { position: absolute; top: 6%; left: 2%; width: 86%; aspect-ratio: 1; filter: drop-shadow(12px 20px 8px #22240c28); }
+  .vinyl { width: 100%; aspect-ratio: 1; border-radius: 50%; position: relative; background: #151612; border: 3px solid #33352b; box-shadow: inset 0 0 0 3px #11130f, inset 0 0 0 5px #44463a; }
+  .record-grooves { position: absolute; inset: 2.3%; border-radius: 50%; background: repeating-radial-gradient(circle at center, #282a24 0, #282a24 1px, #12140f 1.5px, #12140f 3px); }
+  .record-grooves::after { content: ''; position: absolute; inset: 13%; border: 5px solid #11130f; border-radius: 50%; box-shadow: 0 0 0 1px #424439, inset 0 0 0 1px #424439; }
+  .record-sheen { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 30deg, transparent 0deg, #d8dcc514 35deg, #e9efce37 43deg, transparent 65deg, transparent 170deg, #e9efce20 205deg, transparent 245deg); }
+  .record-label { position: absolute; width: 35%; height: 35%; top: 32.5%; left: 32.5%; border-radius: 50%; background: var(--pink); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px #14160f, 0 0 0 9px #46483b; }
+  .label-type { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .label-type text { font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px; fill: var(--ink); }
+  .record-label > .asterisk { width: 31%; height: 31%; }
+  .record-side { position: absolute; top: 20%; font-size: 9px; font-weight: 700; letter-spacing: .08em; }
+  .record-speed { position: absolute; bottom: 20%; font-size: 7px; line-height: 1.5; text-align: center; font-weight: 600; }
+  .spindle { position: absolute; width: 8px; height: 8px; border: 1px solid #bbb; background: #1a1c16; border-radius: 50%; box-shadow: 0 0 0 4px var(--pink); }
+  .tonearm { position: absolute; top: -3%; right: -2%; width: 34%; height: 80%; overflow: visible; filter: drop-shadow(4px 6px 2px #282a183b); }
+  .record-sticker { position: absolute; top: 62%; left: -4%; width: 138px; height: 138px; display: flex; justify-content: center; align-items: center; flex-direction: column; background: var(--paper); border-radius: 50%; transform: rotate(-15deg); box-shadow: 3px 5px 0 #00000012; }
+  .record-sticker span { font-size: 15px; font-weight: 900; line-height: 1.1; letter-spacing: -.04em; }
+  .record-sticker .asterisk { margin-top: 9px; width: 25px; height: 25px; }
+  .needle-button { position: absolute; bottom: 2%; right: 8%; display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 650; letter-spacing: .03em; }
+  .needle-button > span { width: 38px; height: 38px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 10px; }
+  .needle-button:hover > span { background: var(--ink); color: var(--acid); }
+  .hero-footer { min-height: 95px; display: flex; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--rule); position: relative; z-index: 3; margin-top: 18px; font-size: 9px; }
+  .hero-footer > div { display: flex; align-items: center; gap: 12px; }
+  .hero-footer strong { font-weight: 600; }
+  .small-disc { width: 32px; height: 32px; background: var(--ink); border-radius: 50%; position: relative; }
+  .small-disc::after { content: ''; width: 11px; height: 11px; position: absolute; inset: 10.5px; border: 4px solid var(--pink); border-radius: 50%; }
+  .hero-note { font-size: 11px; letter-spacing: 0; font-weight: 450; }
+  .scroll-cue { display: flex; align-items: center; gap: 27px; font-size: 9px; }
+  .scroll-cue > span { font-size: 28px; }
+  .audio-error { position: absolute; bottom: 9px; right: 4vw; font-size: 11px; }
+  .ticker { overflow: hidden; background: var(--ink); color: var(--paper); padding: 22px 0; }
+  .ticker-track { display: flex; width: max-content; }
+  .ticker-set { display: flex; align-items: center; gap: 40px; padding-right: 40px; }
+  .ticker-set span { font-size: 17px; font-weight: 500; white-space: nowrap; letter-spacing: -.02em; }
+  .ticker .asterisk { color: var(--acid); width: 27px; height: 27px; }
+  .frequency { background: var(--paper); padding-top: 47px; padding-bottom: 110px; }
+  .frequency-layout { display: grid; grid-template-columns: 27% 73%; padding-top: 72px; }
+  .frequency-aside { padding-top: 26px; }
+  .frequency-stamp { width: 160px; height: 160px; border: 1px solid var(--ink); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transform: rotate(-14deg); }
+  .frequency-stamp .asterisk { width: 48px; height: 48px; }
+  .frequency-stamp span { text-align: center; font-size: 10px; line-height: 1.3; }
+  .frequency-aside > p { font-size: 10px; margin-top: 28px; letter-spacing: 0; }
+  .manifesto-copy h2 { max-width: 1000px; font-size: clamp(50px, 6.1vw, 105px); font-weight: 500; line-height: 1.09; letter-spacing: -.065em; }
+  .manifesto-word { display: inline; }
+  .word-serif { font-family: Georgia, serif; font-style: italic; font-weight: 400; }
+  .manifesto-bottom { display: grid; grid-template-columns: 50px 1fr 130px; gap: 18px; margin-top: 42px; }
+  .mini-arrow { font-size: 43px; line-height: .85; }
+  .manifesto-bottom p { max-width: 365px; font-size: 14px; line-height: 1.65; letter-spacing: -.02em; }
+  .no-shuffle { font-size: 9px; padding-top: 4px; text-align: right; }
+  .listening-room { background: var(--ink); color: var(--paper); padding: 52px 0 27px; }
+  .collection-heading { padding: 0 4vw; }
+  .collection-heading .eyebrow { color: #c7c7b9; }
+  .collection-heading > div:not(.collection-directions) { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 25px; }
+  .collection-heading h2 { font-size: clamp(50px, 6vw, 92px); line-height: .98; }
+  .collection-heading h2 br { display: none; }
+  .collection-heading h2 span { color: var(--acid); }
+  .collection-heading p { font-size: 12px; line-height: 1.6; color: #cccdbf; max-width: 190px; padding-bottom: 5px; }
+  .collection-directions { display: flex; align-items: center; justify-content: flex-end; gap: 20px; font-size: 8px; margin-top: 25px; }
+  .collection-directions .arrow { width: 30px; height: 20px; }
+  .mobile-direction { display: none; }
+  .records-window { overflow: hidden; padding: 24px 0 0; }
+  .records-track { display: flex; gap: 3vw; width: max-content; padding: 0 4vw; }
+  .record-card { width: min(34vw, 480px); flex-shrink: 0; }
+  .record-button { display: block; width: 100%; position: relative; text-align: left; }
+  .album-art { aspect-ratio: 1; width: 100%; background: var(--album-color); color: var(--ink); position: relative; overflow: hidden; padding: 5.5%; }
+  .album-art::after { content: ''; position: absolute; inset: 0; opacity: .065; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.8' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .sleeve-top, .sleeve-bottom { display: flex; justify-content: space-between; position: relative; z-index: 2; font-size: 8px; }
+  .sleeve-top { border-bottom: 1px solid currentColor; padding-bottom: 8px; }
+  .sleeve-title { font-size: clamp(40px, 4.1vw, 62px); line-height: .97; position: absolute; left: 5.5%; bottom: 15%; z-index: 2; }
+  .sleeve-title span { display: block; }
+  .sleeve-bottom { position: absolute; bottom: 5.5%; left: 5.5%; right: 5.5%; align-items: flex-end; font-size: 7px; }
+  .barcode { letter-spacing: -2px; font-size: 22px; line-height: .8; }
+  .album-graphic { position: absolute; inset: 0; overflow: hidden; }
+  .sun-rings { position: absolute; width: 80%; aspect-ratio: 1; top: 9%; right: -20%; }
+  .sun-rings i { border-radius: 50%; position: absolute; width: calc(100% - var(--i) * 12%); height: calc(100% - var(--i) * 12%); top: calc(var(--i) * 6%); left: calc(var(--i) * 6%); border: 2px solid var(--ink); }
+  .sun-rings i:last-child { background: var(--ink); }
+  .art-slow .sleeve-title { font-size: clamp(50px, 5.2vw, 78px); }
+  .deep-grid { position: absolute; width: 65%; aspect-ratio: 1; top: 13%; right: -5%; display: grid; grid-template-columns: repeat(5, 1fr); transform: rotate(-17deg); }
+  .deep-grid i { background: var(--ink); border-radius: 50% 50% 0 50%; }
+  .deep-grid i:nth-child(even) { border-radius: 0 50% 50% 50%; }
+  .art-deep .sleeve-title { color: #a8b7ff; text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink); mix-blend-mode: normal; background: #a8b7ff; padding: 5px 15px 0 0; }
+  .orbit-lines { position: absolute; width: 90%; height: 80%; top: -7%; right: -16%; transform: rotate(-28deg); }
+  .orbit-lines i { width: calc(100% - var(--i) * 12%); height: 100%; border: 2px solid var(--ink); border-radius: 50%; position: absolute; left: calc(var(--i) * 6%); }
+  .orbit-lines span { width: 38%; aspect-ratio: 1; background: var(--ink); border-radius: 50%; position: absolute; left: 31%; top: 32%; }
+  .record-hover { position: absolute; bottom: 14px; right: 14px; display: flex; align-items: center; gap: 12px; padding: 10px 13px; background: var(--paper); border-radius: 40px; color: var(--ink); opacity: 0; transform: translateY(6px); }
+  .record-hover span { font-size: 9px; font-weight: 650; }
+  .record-hover .arrow { width: 21px; height: 21px; }
+  .record-button:hover .record-hover, .record-button:focus-visible .record-hover { opacity: 1; transform: none; }
+  .record-caption { display: flex; justify-content: space-between; align-items: center; padding: 17px 0 0; }
+  .record-caption small { font-size: 8px; color: #b6b7a9; }
+  .record-caption h3 { font-size: 20px; font-weight: 450; letter-spacing: -.03em; margin-top: 5px; }
+  .record-caption > button { width: 44px; height: 44px; display: grid; place-items: center; }
+  .record-caption .arrow { width: 25px; }
+  .collection-end { width: 27vw; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; color: var(--acid); }
+  .collection-end .asterisk { width: 90px; height: 90px; }
+  .collection-end p { font-size: 65px; line-height: .98; text-align: center; }
+  .collection-end > span { font-size: 10px; letter-spacing: .07em; }
+  .collection-bottom { display: flex; align-items: center; gap: 30px; justify-content: space-between; margin: 40px 4vw 0; font-size: 8px; color: #c6c7b9; }
+  .collection-progress { width: 20%; height: 2px; background: #55564b; }
+  .collection-progress i { display: block; width: 100%; height: 2px; background: var(--acid); transform: scaleX(0); transform-origin: left; }
+  .ritual { background: var(--paper); padding-top: 48px; padding-bottom: 96px; }
+  .ritual-title { display: flex; justify-content: space-between; align-items: center; padding: 65px 0 50px; }
+  .ritual-title h2 { font-size: clamp(45px, 5.8vw, 96px); line-height: 1.04; }
+  .ritual-title h2 span { color: #7e8073; }
+  .ritual-circle { width: 140px; height: 140px; border: 1px solid var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; transform: rotate(13deg); }
+  .ritual-circle > span { font-family: Georgia, serif; font-size: 48px; letter-spacing: -.08em; }
+  .ritual-circle > small { font-size: 8px; margin-top: 6px; }
+  .ritual-row { padding: 30px 0; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 7% 48% 35% 10%; align-items: center; }
+  .ritual-row > span { align-self: start; padding-top: 5px; font-size: 10px; }
+  .ritual-row h3 { font-size: 27px; font-weight: 450; letter-spacing: -.04em; }
+  .ritual-row p { font-size: 13px; line-height: 1.6; max-width: 305px; }
+  .ritual-row > .asterisk { width: 25px; height: 25px; margin-left: auto; }
+  .ritual-row:last-child { border-bottom: 1px solid var(--rule); }
+  .club { background: var(--pink); padding-bottom: 90px; }
+  .club-layout { display: grid; grid-template-columns: 61% 39%; align-items: center; padding-top: 70px; }
+  .club h2 { font-size: clamp(80px, 10.3vw, 163px); line-height: 1; }
+  .club h2 span { font-family: Georgia, serif; font-style: italic; letter-spacing: -.1em; font-size: .94em; }
+  .club-invite { margin-top: 29px; }
+  .club-invite > p:first-child { font-size: 15px; line-height: 1.55; }
+  .club-invite .magnet { margin-top: 25px; }
+  .pill-button.dark { background: var(--ink); color: var(--paper); border-color: var(--ink); padding-left: 25px; padding-right: 25px; min-width: 175px; justify-content: space-between; }
+  .pill-button.dark:hover { background: var(--paper); color: var(--ink); }
+  .pill-button.dark > span { font-size: 20px; }
+  .club-confirmation { font-size: 10px; margin-top: 14px; line-height: 1.5; max-width: 310px; }
+  .club-card { background: var(--acid); padding: 28px; width: 88%; aspect-ratio: .78; transform: rotate(9deg); box-shadow: 14px 15px 0 #191a1518; position: relative; }
+  .club-card-top { display: flex; align-items: center; justify-content: space-between; font-weight: 850; font-size: 16px; letter-spacing: -.06em; }
+  .club-card-top .asterisk { width: 31px; height: 31px; }
+  .membership-label { display: block; font-size: 9px; border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 18px; }
+  .member-title { font-size: clamp(80px, 8.4vw, 130px); line-height: .95; margin: 25px 0 40px; }
+  .club-card-bottom { border-top: 1px solid var(--rule); padding-top: 15px; font-size: 7px; display: flex; justify-content: space-between; align-items: center; }
+  .club-card-bottom > span:last-child { font-size: 32px; line-height: 1; }
+  .club-card.is-member::after { content: 'ONE OF US'; border: 2px solid currentColor; font-size: 15px; font-weight: 800; padding: 5px 12px; position: absolute; top: 50%; right: 10%; transform: rotate(-20deg); background: var(--acid); }
+  .footer { padding: 40px 4vw 20px; background: var(--ink); color: var(--paper); }
+  .footer-top { display: flex; justify-content: space-between; align-items: center; font-size: 9px; }
+  .footer-top button { display: flex; align-items: center; gap: 15px; }
+  .footer-top button > span { font-size: 25px; }
+  .footer-word { display: flex; justify-content: space-between; align-items: baseline; margin: 65px -.35vw 20px; font-size: 17.3vw; line-height: 1.2; letter-spacing: -.045em; overflow: hidden; }
+  .footer-word span { display: inline-block; }
+  .footer-word sup { font-family: 'DM Sans Variable', sans-serif; font-size: 2vw; align-self: flex-start; margin-top: 2vw; margin-left: .2vw; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ffffff33; padding-top: 22px; font-size: 8px; }
+  .footer-bottom button { padding: 5px; }
+  .footer-bottom button span { margin-left: 8px; }
+  dialog { padding: 0; border: 0; color: var(--ink); }
+  dialog::backdrop { background: #10120edb; }
+  .menu-dialog { max-width: none; max-height: none; width: 100%; height: 100dvh; background: transparent; margin: 0; }
+  .menu-inner { background: var(--pink); height: 100%; padding: 32px 4vw; display: flex; flex-direction: column; }
+  .menu-top { display: flex; justify-content: space-between; align-items: center; }
+  .text-button { display: flex; align-items: center; gap: 18px; min-height: 44px; }
+  .close-symbol { font-size: 32px; font-weight: 300; }
+  .menu-inner nav { margin: auto 0; }
+  .menu-link { width: 100%; text-align: left; display: flex; align-items: center; font-size: clamp(48px, 7vw, 120px); border-bottom: 1px solid var(--rule); padding: 15px 0; line-height: 1.3; overflow: hidden; text-transform: uppercase; }
+  .menu-link small { font-family: 'DM Sans Variable', sans-serif; font-size: 11px; align-self: center; width: 8%; letter-spacing: 0; }
+  .menu-link .arrow { width: 5vw; height: 5vw; margin-left: auto; }
+  .menu-link:hover { color: #6c3646; }
+  .menu-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 9px; }
+  .menu-bottom .asterisk { width: 32px; height: 32px; }
+  .session-dialog { width: min(920px, 92vw); max-width: none; max-height: 90dvh; background: transparent; overflow-y: auto; }
+  .session-panel { display: grid; grid-template-columns: 1fr 1fr; background: var(--paper); position: relative; }
+  .session-panel .album-art { align-self: stretch; aspect-ratio: auto; min-height: 460px; }
+  .session-panel .sleeve-title { font-size: 70px; }
+  .dialog-close { position: absolute; top: 10px; right: 12px; font-size: 28px; width: 40px; height: 40px; z-index: 5; border-radius: 50%; background: var(--paper); }
+  .session-info { padding: 48px 30px 25px; }
+  .session-info h2 { font-size: 48px; line-height: 1.08; margin: 24px 0 15px; }
+  .session-genre { font-size: 9px; }
+  .session-info > p { font-size: 13px; line-height: 1.6; margin-top: 20px; }
+  .session-info ul { font-size: 11px; line-height: 1.8; padding-left: 16px; margin: 18px 0 25px; }
+  .solid-button { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 15px 20px; background: var(--ink); color: var(--paper); width: 100%; font-size: 12px; }
+  .solid-button:hover { background: #393d2b; }
+  .session-info .preview-note { font-size: 9px; margin-top: 12px; }
+  .motion-off .records-window { overflow: visible; }
+  .motion-off .records-track { width: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .motion-off .record-card { width: auto; }
+  .motion-off .collection-end, .motion-off .collection-progress, .motion-off .desktop-direction { display: none; }
+  .motion-off .mobile-direction { display: inline; }
+}
+@layer responsive {
+  @media (min-width: 1700px) {
+    .hero-content { min-height: 780px; }
+    .turntable { right: 3vw; }
+  }
+  @media (min-width: 1000px) and (min-height: 650px) and (max-height: 850px) {
+    .listening-room { padding-top: 30px; }
+    .collection-heading h2 { font-size: 64px; }
+    .collection-heading > div:not(.collection-directions) { margin-top: 18px; }
+    .collection-directions { margin-top: 12px; }
+    .record-card { width: min(34vw, 47vh); }
+    .sleeve-title { font-size: 46px; }
+    .art-slow .sleeve-title { font-size: 58px; }
+    .records-window { padding-top: 15px; }
+    .collection-bottom { margin-top: 25px; }
+  }
+  @media (max-width: 1199px) {
+    .hero-description { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .hero-content { min-height: 650px; }
+    .turntable { top: 65px; }
+    .record-sticker { width: 105px; height: 105px; }
+    .record-sticker span { font-size: 13px; }
+    .collection-heading p { display: none; }
+    .ritual-row h3 { font-size: 24px; }
+    .club-card { padding: 22px; }
+  }
+  @media (max-width: 999px), (max-height: 649px) {
+    .records-window { overflow: visible; }
+    .records-track, .motion-off .records-track { width: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    .record-card { width: auto; }
+    .collection-end, .collection-progress, .desktop-direction { display: none; }
+    .mobile-direction { display: inline; }
+    .collection-bottom { padding-bottom: 15px; }
+    .collection-heading h2 { font-size: 6.3vw; }
+    .record-caption h3 { font-size: 17px; }
+    .record-caption small { font-size: 7px; }
+    .sleeve-top { font-size: 6px; }
+    .sleeve-title, .art-slow .sleeve-title { font-size: 4.3vw; }
+    .sleeve-bottom { font-size: 5px; }
+    .barcode { font-size: 15px; }
+  }
+  @media (max-width: 799px) {
+    .section-pad { padding: 30px 6vw 65px; }
+    .header { height: 78px; }
+    .hero { padding: 0 6vw; }
+    .header-caption { display: none; }
+    .wordmark { font-size: 24px; }
+    .header-actions { gap: 24px; }
+    .hero-eyebrow { padding-top: 23px; font-size: 8px; }
+    .hero-eyebrow > span:last-child { display: none; }
+    .hero-content { padding-top: 32px; min-height: 660px; }
+    .hero-copy { width: 70%; }
+    h1 { font-size: 16.2vw; }
+    .hero-description { margin-top: 25px; }
+    .hero-description p { font-size: 12px; }
+    .pill-button { padding: 12px 17px; font-size: 11px; min-height: 46px; gap: 17px; }
+    .turntable { width: 70vw; right: -19vw; top: 130px; }
+    .tonearm { right: 11%; top: -9%; }
+    .record-coordinate { display: none; }
+    .record-sticker { width: 95px; height: 95px; top: 73%; left: 5%; }
+    .record-sticker span { font-size: 11px; }
+    .record-sticker .asterisk { width: 19px; height: 19px; margin-top: 6px; }
+    .needle-button { bottom: -19%; right: 38%; gap: 8px; font-size: 8px; }
+    .hero-footer { font-size: 8px; min-height: 85px; }
+    .hero-note { display: none; }
+    .scroll-cue { font-size: 8px; gap: 13px; }
+    .ticker { padding: 17px 0; }
+    .ticker-set { gap: 25px; padding-right: 25px; }
+    .ticker-set span { font-size: 14px; }
+    .ticker .asterisk { width: 23px; height: 23px; }
+    .section-index { font-size: 8px; padding-bottom: 20px; gap: 15px; }
+    .section-index > span:last-child { text-align: right; }
+    .frequency-layout { grid-template-columns: 1fr; padding-top: 38px; }
+    .frequency-aside { display: none; }
+    .manifesto-copy h2 { font-size: 9.2vw; }
+    .manifesto-bottom { grid-template-columns: 30px 1fr; gap: 15px; margin-top: 27px; }
+    .manifesto-bottom p { font-size: 13px; }
+    .mini-arrow { font-size: 32px; }
+    .no-shuffle { display: none; }
+    .listening-room { padding-top: 32px; }
+    .collection-heading { padding: 0 6vw; }
+    .collection-heading h2 { font-size: 9.1vw; }
+    .collection-heading h2 br { display: block; }
+    .collection-heading .eyebrow { font-size: 9px; }
+    .collection-directions { justify-content: space-between; margin-top: 25px; }
+    .records-track, .motion-off .records-track { display: grid; grid-template-columns: 1fr; gap: 42px; padding: 0 6vw; }
+    .album-art { padding: 6%; }
+    .sleeve-top { font-size: 9px; }
+    .sleeve-title, .art-slow .sleeve-title { font-size: 13vw; }
+    .sleeve-bottom { font-size: 8px; }
+    .barcode { font-size: 26px; }
+    .record-caption small { font-size: 8px; }
+    .record-caption h3 { font-size: 23px; }
+    .record-hover { opacity: 1; transform: none; }
+    .collection-bottom { margin-left: 6vw; margin-right: 6vw; font-size: 7px; gap: 15px; }
+    .ritual-title { padding-top: 40px; padding-bottom: 32px; }
+    .ritual-title h2 { font-size: 7.2vw; }
+    .ritual-circle { width: 80px; height: 80px; flex-shrink: 0; margin-left: 15px; }
+    .ritual-circle > span { font-size: 29px; }
+    .ritual-circle > small { font-size: 5px; margin-top: 2px; }
+    .ritual-row { grid-template-columns: 30px 1fr 20px; gap: 12px; padding: 25px 0; }
+    .ritual-row h3 { font-size: 23px; }
+    .ritual-row > span { grid-row: 1; }
+    .ritual-row > .asterisk { grid-column: 3; grid-row: 1; width: 20px; height: 20px; }
+    .ritual-row p { grid-column: 2; max-width: 380px; font-size: 12px; }
+    .club-layout { grid-template-columns: 1fr; padding-top: 45px; gap: 60px; }
+    .club h2 { font-size: 15vw; }
+    .club-invite > p:first-child { font-size: 14px; }
+    .club-card { width: 75%; max-width: 360px; justify-self: center; padding: 25px; margin-bottom: 15px; }
+    .member-title { font-size: 24vw; }
+    .club-card-top { font-size: 18px; }
+    .club-card-bottom { font-size: 7px; }
+    .footer { padding: 30px 6vw 20px; }
+    .footer-top { font-size: 8px; }
+    .footer-word { font-size: 16.6vw; margin-top: 45px; margin-bottom: 25px; }
+    .footer-bottom { gap: 22px; flex-wrap: wrap; font-size: 7px; }
+    .footer-bottom > span:last-child { display: none; }
+    .menu-inner { padding: 24px 6vw; }
+    .menu-link { font-size: 8vw; padding: 25px 0; }
+    .menu-link small { width: 9%; font-size: 9px; }
+    .menu-bottom { gap: 10px; font-size: 7px; }
+    .menu-bottom span { max-width: 100px; }
+    .session-dialog { width: 88vw; max-height: 88dvh; }
+    .session-panel { grid-template-columns: 1fr; }
+    .session-panel .album-art { aspect-ratio: 1; min-height: 0; }
+    .session-panel .sleeve-title { font-size: 13vw; }
+    .session-info { padding: 30px; }
+    .session-info h2 { font-size: 42px; margin-top: 15px; }
+    .session-info > p { font-size: 13px; }
+  }
+  @media (max-width: 480px) {
+    .header-actions { gap: 18px; }
+    .sound-button > span:last-child { display: none; }
+    .sound-button { width: 28px; justify-content: center; }
+    .menu-button { gap: 10px; font-size: 10px; }
+    .menu-button > span { width: 21px; }
+    .hero-content { min-height: 665px; }
+    .hero-copy { width: 100%; }
+    h1 { font-size: 23.5vw; line-height: .98; }
+    .turntable { width: 77vw; top: 284px; right: -22vw; }
+    .hero-description { margin-top: 24px; gap: 20px; width: 52%; }
+    .hero-description p { font-size: 11px; max-width: 160px; }
+    .hero-description .pill-button { white-space: normal; text-align: left; max-width: 158px; line-height: 1.25; padding: 11px 15px; gap: 9px; }
+    .record-sticker { top: 78%; left: 6%; width: 78px; height: 78px; }
+    .record-sticker span { font-size: 9px; }
+    .record-sticker .asterisk { width: 16px; height: 16px; }
+    .record-label { width: 39%; height: 39%; left: 30.5%; top: 30.5%; }
+    .record-side { font-size: 6px; }
+    .record-speed { font-size: 5px; }
+    .needle-button { right: 42%; bottom: -21%; font-size: 7px; white-space: nowrap; }
+    .needle-button > span { width: 31px; height: 31px; }
+    .hero-footer { gap: 15px; min-height: 82px; margin-top: 0; font-size: 7px; }
+    .hero-footer > div { gap: 8px; }
+    .small-disc { width: 27px; height: 27px; }
+    .small-disc::after { inset: 8px; }
+    .scroll-cue { font-size: 7px; gap: 10px; text-align: right; max-width: 95px; }
+    .scroll-cue > span { font-size: 24px; }
+    .section-index { font-size: 7px; }
+    .section-index > span:last-child { max-width: 130px; }
+    .ritual-title h2 { font-size: 8vw; }
+    .ritual-circle { display: none; }
+    .ritual-row h3 { font-size: 21px; }
+    .club-card { width: 88%; }
+    .member-title { font-size: 27vw; }
+    .club-card-top { font-size: 16px; }
+    .session-info { padding: 25px; }
+  }
+  @media (max-width: 360px) {
+    .wordmark { font-size: 21px; }
+    .hero-content { min-height: 610px; }
+    .turntable { top: 266px; }
+    .header-actions { gap: 12px; }
+    .hero-description p { font-size: 10px; }
+    .sleeve-top { font-size: 7px; }
+    .sleeve-bottom { font-size: 6px; }
+  }
+}
