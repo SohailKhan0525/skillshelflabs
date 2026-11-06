@@ -51,7 +51,7 @@ function AlbumArt({ session }: { session: Session }) {
   </div>;
 }
 
-function Menu({ close, navigate, motion }: { close: () => void; navigate: (id: string) => void; motion: boolean }) {
+function Menu({ close, motion }: { close: (id?: string) => void; motion: boolean }) {
   const root = useRef<HTMLDialogElement>(null);
   useEffect(() => { const d = root.current!; d.showModal(); return () => d.close(); }, []);
   const { contextSafe } = useGSAP(() => {
@@ -60,7 +60,7 @@ function Menu({ close, navigate, motion }: { close: () => void; navigate: (id: s
     gsap.from('.menu-link span', { yPercent: 110, stagger: 0.08, duration: 0.8, delay: 0.3, ease: 'power4.out' });
   }, { scope: root });
   const dismiss = contextSafe((id?: string) => {
-    gsap.to('.menu-inner', { yPercent: -105, duration: motion ? 0.5 : 0, ease: 'power3.inOut', onComplete: () => { close(); if (id) navigate(id); } });
+    gsap.to('.menu-inner', { yPercent: -105, duration: motion ? 0.5 : 0, ease: 'power3.inOut', onComplete: () => close(id) });
   });
   return <dialog ref={root} className="menu-dialog" aria-label="Site navigation" onCancel={e => { e.preventDefault(); dismiss(); }}><div className="menu-inner">
     <div className="menu-top"><span className="wordmark">AFTERHOURS<span>®</span></span><button className="text-button" autoFocus onClick={() => dismiss()}>CLOSE <span className="close-symbol">×</span></button></div>
@@ -77,7 +77,7 @@ function SessionDialog({ session, close, playing, toggle, motion, audioError }: 
   return <dialog ref={root} className="session-dialog" aria-labelledby="session-title" onCancel={e => { e.preventDefault(); dismiss(); }} onClick={e => { if (e.target === root.current) dismiss(); }}><div className="session-panel">
     <button className="dialog-close" autoFocus aria-label="Close listening session" onClick={dismiss}>×</button>
     <AlbumArt session={session} />
-    <div className="session-info"><span className="eyebrow">ON THE TURNTABLE / {session.number}</span><h2 id="session-title">{session.title.replace('\n', ' ')}</h2><span className="session-genre">{session.genre} — {session.bpm} BPM</span><p>{session.description}</p><ul>{session.notes.map(note => <li key={note}>{note}</li>)}</ul><button className="solid-button" onClick={toggle}>{playing ? 'Pause the preview' : 'Drop the needle'}<span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span></button><p className="preview-note">An original 24-second studio sketch. Loops while you listen.</p>{audioError && <p role="status">{audioError}</p>}</div>
+    <div className="session-info"><span className="eyebrow">ON THE TURNTABLE / {session.number}</span><h2 id="session-title">{session.title.replace('\n', ' ')}</h2><span className="session-genre">{session.genre} — {session.bpm} BPM</span><p>{session.description}</p><ul>{session.notes.map(note => <li key={note}>{note}</li>)}</ul><button className="solid-button" onClick={toggle}>{playing ? 'Pause the preview' : 'Drop the needle'}<span aria-hidden="true">{playing ? 'Ⅱ' : '▶︎'}</span></button><p className="preview-note">An original 24-second studio sketch. Loops while you listen.</p>{audioError && <p role="status">{audioError}</p>}</div>
   </div></dialog>;
 }
 
@@ -87,6 +87,7 @@ export default function App() {
   const introPlayed = useRef(false);
   const [motion, setMotion] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const [menu, setMenu] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
   const [current, setCurrent] = useState(sessions[0]);
   const [sessionOpen, setSessionOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -161,6 +162,15 @@ export default function App() {
     const pin = id === 'sessions' ? ScrollTrigger.getById('records') : undefined;
     gsap.to(window, { scrollTo: { y: pin ? pin.start : el, offsetY: id === 'sessions' ? 0 : 30, autoKill: true }, duration: motion ? 1.15 : 0, ease: 'power3.inOut', onComplete: () => el.focus({ preventScroll: true }) });
   });
+  // Run navigation after the menu has unmounted. Calling the parent GSAP
+  // context inside the menu context would attach it to the menu cleanup.
+  useEffect(() => {
+    if (!menu && pendingNavigation) {
+      navigate(pendingNavigation);
+      setPendingNavigation(null);
+    }
+  }, [menu, pendingNavigation]);
+
   const hoverRecord = contextSafe((event: MouseEvent<HTMLButtonElement>, active: boolean) => {
     if (!motion || !window.matchMedia('(pointer: fine)').matches) return;
     gsap.to(event.currentTarget.querySelector('.album-art'), { y: active ? -8 : 0, rotation: active ? -2 : 0, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
@@ -195,7 +205,7 @@ export default function App() {
         <header className="header"><a href="#" className="wordmark" aria-label="Afterhours home" onClick={e => { e.preventDefault(); navigate('main'); }}>AFTERHOURS<span>®</span></a><span className="header-caption">AN INDEPENDENT<br />LISTENING CLUB</span><div className="header-actions"><button className={`sound-button ${playing ? 'is-playing' : ''}`} onClick={toggleAudio} aria-pressed={playing} aria-label={playing ? "Turn sound off" : "Turn sound on"}><span className="equalizer" aria-hidden="true"><i /><i /><i /><i /></span><span>SOUND {playing ? 'ON' : 'OFF'}</span></button><button className="menu-button" onClick={() => setMenu(true)} aria-haspopup="dialog">MENU <span><i /><i /></span></button></div></header>
         <div className="hero-eyebrow hero-detail"><span><i className="status-dot" /> HIGH FIDELITY. LOW PRESSURE.</span><span>EST. AFTER DARK / VOL. 001</span></div>
         <div className="hero-content"><div className="hero-copy"><h1 id="hero-title"><span className="hero-line"><span>STAY</span></span><span className="hero-line"><span>A LITTLE</span></span><span className="hero-line"><span>LATER<span className="title-period">.</span></span></span></h1><div className="hero-description hero-detail"><p>For the records you haven’t heard.<br />And the nights you don’t want to end.</p><Magnet disabled={!motion}><button className="pill-button" onClick={() => navigate('sessions')}>Find your frequency <Arrow diagonal /></button></Magnet></div></div>
-          <div className="turntable"><div className="record-outline" /><span className="record-coordinate">AH—001 / 12-INCH LONG PLAY</span><div className="hero-disc"><Vinyl /></div><svg className="tonearm" viewBox="0 0 260 570" aria-hidden="true"><defs><linearGradient id="metal"><stop stopColor="#494a42" /><stop offset=".25" stopColor="#f8f9de" /><stop offset=".47" stopColor="#96978a" /><stop offset=".62" stopColor="#fffde4" /><stop offset="1" stopColor="#53544c" /></linearGradient></defs><circle cx="210" cy="69" r="39" fill="#1a1b15" /><circle cx="210" cy="69" r="28" fill="url(#metal)" /><circle cx="210" cy="69" r="15" fill="#292b25" /><path d="M210 69V330Q210 360 188 384L96 476" stroke="#111" strokeWidth="20" fill="none" opacity=".25" transform="translate(5 6)" /><path d="M210 69V330Q210 360 188 384L96 476" stroke="url(#metal)" strokeWidth="13" fill="none" /><path d="m97 450 26 25-48 55-30-29z" fill="#262821" /><path d="m47 498 30 27-11 12-30-27z" fill="#fa7254" /><rect x="191" y="105" width="38" height="51" rx="4" fill="url(#metal)" /></svg><div className="record-sticker"><span>ALL EARS.</span><span>NO RULES.</span><Asterisk /></div><button className="needle-button" onClick={toggleAudio} aria-label={playing ? 'Pause listening preview' : 'Play listening preview'}><span>{playing ? 'Ⅱ' : '▶'}</span>{playing ? 'LIFT THE NEEDLE' : 'DROP THE NEEDLE'}</button></div>
+          <div className="turntable"><div className="record-outline" /><span className="record-coordinate">AH—001 / 12-INCH LONG PLAY</span><div className="hero-disc"><Vinyl /></div><svg className="tonearm" viewBox="0 0 260 570" aria-hidden="true"><defs><linearGradient id="metal"><stop stopColor="#494a42" /><stop offset=".25" stopColor="#f8f9de" /><stop offset=".47" stopColor="#96978a" /><stop offset=".62" stopColor="#fffde4" /><stop offset="1" stopColor="#53544c" /></linearGradient></defs><circle cx="210" cy="69" r="39" fill="#1a1b15" /><circle cx="210" cy="69" r="28" fill="url(#metal)" /><circle cx="210" cy="69" r="15" fill="#292b25" /><path d="M210 69V330Q210 360 188 384L96 476" stroke="#111" strokeWidth="20" fill="none" opacity=".25" transform="translate(5 6)" /><path d="M210 69V330Q210 360 188 384L96 476" stroke="url(#metal)" strokeWidth="13" fill="none" /><path d="m97 450 26 25-48 55-30-29z" fill="#262821" /><path d="m47 498 30 27-11 12-30-27z" fill="#fa7254" /><rect x="191" y="105" width="38" height="51" rx="4" fill="url(#metal)" /></svg><div className="record-sticker"><span>ALL EARS.</span><span>NO RULES.</span><Asterisk /></div><button className="needle-button" onClick={toggleAudio} aria-label={playing ? 'Pause listening preview' : 'Play listening preview'}><span>{playing ? 'Ⅱ' : '▶︎'}</span>{playing ? 'LIFT THE NEEDLE' : 'DROP THE NEEDLE'}</button></div>
         </div>
         <div className="hero-footer"><div><span className="small-disc" aria-hidden="true" /><span>ON ROTATION<br /><strong>{current.title.replace('\n', ' ')} — AH {current.number}</strong></span></div><span className="hero-note">Good records. Open minds.<br />Absolutely no rush.</span><button className="scroll-cue" onClick={() => navigate('frequency')}>SCROLL TO TUNE IN <span>↓</span></button></div>
         {audioError && <p role="status" className="audio-error">{audioError}</p>}
@@ -209,11 +219,11 @@ export default function App() {
 
       <section className="ritual section-pad" aria-labelledby="ritual-title"><div className="section-index"><span>03 / THE RITUAL</span><span>YOU’RE IN GOOD COMPANY</span></div><div className="ritual-title reveal"><h2 id="ritual-title">NOT EVERYTHING<br />NEEDS A <span>SKIP BUTTON.</span></h2><div className="ritual-circle"><span>33⅓</span><small>TAKE IT SLOW</small></div></div><div className="ritual-rows">{[['01', 'Leave the algorithm outside.', 'A little less prediction. A lot more happy accidents. Every session starts with a human feeling.'], ['02', 'Give it a whole side.', 'Let the unfamiliar become your new favorite. The good part might be just around the corner.'], ['03', 'Bring an open mind.', 'Jazz to dub. Soul to something we can’t quite name. Good music doesn’t care much for categories.']].map(([n, title, text]) => <div className="ritual-row reveal" key={n}><span>{n}</span><h3>{title}</h3><p>{text}</p><Asterisk /></div>)}</div></section>
 
-      <section className="club section-pad" id="club" tabIndex={-1} aria-labelledby="club-title"><div className="section-index"><span>04 / SAME TIME, NEXT RECORD?</span><span>THE DOOR IS ALWAYS OPEN ↙</span></div><div className="club-layout"><div className="club-copy"><h2 id="club-title" className="reveal">YOU HAVE<br />GOOD <span>TASTE.</span></h2><div className="club-invite reveal"><p>Make yourself a regular.<br />Save your place in this little listening club.</p><Magnet disabled={!motion}><button className="pill-button dark" onClick={saveClub}>{saved ? 'You’re one of us' : 'Count me in'}<span aria-hidden="true">{saved ? '✓' : '↗'}</span></button></Magnet><p className="club-confirmation" role="status">{saved ? 'Your club card is saved on this browser. Welcome to the late side.' : 'No inbox. No sign-up. Just a shared frequency.'}</p></div></div><div className={`club-card ${saved ? 'is-member' : ''}`}><div className="club-card-top"><span>AFTERHOURS®</span><Asterisk className="club-asterisk" /></div><span className="membership-label">THE LISTENING CLUB</span><div className="member-title">ALL<br />EARS.</div><div className="club-card-bottom"><span>{saved ? 'STATUS: ONE OF US' : 'ADMIT ONE CURIOUS MIND'}<br />VALID: AS LONG AS THE RECORD SPINS</span><span>↗</span></div></div></div></section>
+      <section className="club section-pad" id="club" tabIndex={-1} aria-labelledby="club-title"><div className="section-index"><span>04 / SAME TIME, NEXT RECORD?</span><span>THE DOOR IS ALWAYS OPEN ↙</span></div><div className="club-layout"><div className="club-copy"><h2 id="club-title" className="reveal">YOU HAVE<br />GOOD <span>TASTE.</span></h2><div className="club-invite reveal"><p>Make yourself a regular.<br />Save your place in this little listening club.</p><Magnet disabled={!motion}><button className="pill-button dark" onClick={saveClub}>{saved ? 'You’re one of us' : 'Count me in'}<span aria-hidden="true">{saved ? '✓' : '↗'}</span></button></Magnet><p className="club-confirmation" role="status">{saved ? 'Your club card is saved on this browser. Welcome to the late side.' : 'No inbox. No sign-up. Just a shared frequency.'}</p></div></div><div className={`club-card ${saved ? 'is-member' : ''}`}><div className="club-card-top"><span>AFTERHOURS®</span><Asterisk className="club-asterisk" /></div><span className="membership-label">THE LISTENING CLUB</span><div className="member-title">ALL<br />EARS.</div><div className="club-card-bottom"><span>{saved ? 'STATUS: ONE OF US' : 'ADMIT ONE CURIOUS MIND'}<br />VALID: AS LONG AS THE RECORD SPINS</span><Arrow diagonal /></div></div></div></section>
 
       <footer className="footer"><div className="footer-top"><span>INDEPENDENT SOUND.<br />UNREASONABLY LATE.</span><button onClick={() => navigate('main')}>BACK TO THE TOP <span>↑</span></button></div><div className="footer-word" aria-label="Afterhours">{'AFTERHOURS'.split('').map((letter, i) => <span aria-hidden="true" key={i}>{letter}</span>)}<sup>®</sup></div><div className="footer-bottom"><span>© {new Date().getFullYear()} AFTERHOURS — A LISTENING CLUB CONCEPT</span><button onClick={() => setMotion(!motion)} aria-pressed={motion}>MOTION {motion ? 'ON' : 'OFF'} <span aria-hidden="true">{motion ? '◉' : '○'}</span></button><span>MADE FOR YOUR EARS. AND YOUR EYES.</span></div></footer>
     </main>
-    {menu && <Menu close={() => setMenu(false)} navigate={navigate} motion={motion} />}
+    {menu && <Menu close={id => { setMenu(false); if (id) setPendingNavigation(id); }} motion={motion} />}
     {sessionOpen && <SessionDialog session={current} close={() => setSessionOpen(false)} playing={playing} toggle={toggleAudio} motion={motion} audioError={audioError} />}
   </div>;
 }

@@ -59,7 +59,7 @@
   .pill-button { padding: 15px 20px; min-height: 52px; border: 1px solid currentColor; border-radius: 99px; display: flex; align-items: center; gap: 25px; font-size: 12px; font-weight: 600; white-space: nowrap; }
   .pill-button .arrow { width: 21px; height: 21px; }
   .pill-button:hover { background: var(--ink); color: var(--acid); }
-  .turntable { position: absolute; width: min(55vw, 865px); aspect-ratio: 1; top: 14px; right: -1vw; }
+  .turntable { position: absolute; width: min(52vw, 815px); aspect-ratio: 1; top: 14px; right: -1vw; }
   .record-outline { position: absolute; width: 92%; height: 92%; border: 1px solid #191a1530; border-radius: 50%; top: 2%; left: -1%; }
   .record-outline::after { content: ''; position: absolute; border: 1px solid #191a1517; inset: -18px; border-radius: 50%; }
   .record-coordinate { position: absolute; right: 13%; top: -6px; font-size: 9px; letter-spacing: .07em; }
@@ -79,7 +79,7 @@
   .record-sticker { position: absolute; top: 62%; left: -4%; width: 138px; height: 138px; display: flex; justify-content: center; align-items: center; flex-direction: column; background: var(--paper); border-radius: 50%; transform: rotate(-15deg); box-shadow: 3px 5px 0 #00000012; }
   .record-sticker span { font-size: 15px; font-weight: 900; line-height: 1.1; letter-spacing: -.04em; }
   .record-sticker .asterisk { margin-top: 9px; width: 25px; height: 25px; }
-  .needle-button { position: absolute; bottom: 2%; right: 8%; display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 650; letter-spacing: .03em; }
+  .needle-button { position: absolute; bottom: 3%; right: 6%; display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 650; letter-spacing: .03em; }
   .needle-button > span { width: 38px; height: 38px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 10px; }
   .needle-button:hover > span { background: var(--ink); color: var(--acid); }
   .hero-footer { min-height: 95px; display: flex; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--rule); position: relative; z-index: 3; margin-top: 18px; font-size: 9px; }
@@ -117,6 +117,7 @@
   .collection-heading h2 { font-size: clamp(50px, 6vw, 92px); line-height: .98; }
   .collection-heading h2 br { display: none; }
   .collection-heading h2 span { color: var(--acid); }
+  .collection-heading h2 span::before { content: ' '; white-space: pre; }
   .collection-heading p { font-size: 12px; line-height: 1.6; color: #cccdbf; max-width: 190px; padding-bottom: 5px; }
   .collection-directions { display: flex; align-items: center; justify-content: flex-end; gap: 20px; font-size: 8px; margin-top: 25px; }
   .collection-directions .arrow { width: 30px; height: 20px; }
@@ -319,6 +320,7 @@
     .collection-heading { padding: 0 6vw; }
     .collection-heading h2 { font-size: 9.1vw; }
     .collection-heading h2 br { display: block; }
+    .collection-heading h2 span::before { content: none; }
     .collection-heading .eyebrow { font-size: 9px; }
     .collection-directions { justify-content: space-between; margin-top: 25px; }
     .records-track, .motion-off .records-track { display: grid; grid-template-columns: 1fr; gap: 42px; padding: 0 6vw; }
